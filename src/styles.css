@@ -4,6 +4,7 @@ html,body{
     margin: 0;
     width: 100%;
     height: 100%;
+    background-color: gainsboro;
 }
 
 app-root
@@ -24,7 +25,17 @@ app-header
     display: flex;
     align-items: center;
     justify-content: center;
+    margin-bottom: 50px;
     
 }
 
+app-filter-menu
+{
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    width: 100%;
+}
 

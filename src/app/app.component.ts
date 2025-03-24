@@ -1,14 +1,15 @@
 import { Component } from '@angular/core';
 import { HeaderComponent } from './components/header/header.component';
 import { CommonModule } from '@angular/common';
-import { ProductsListComponent } from './components/products-list/products-list.component';
 import { RouterOutlet } from '@angular/router';
 import { Product } from './models/product.model';
 import { ProductService } from './services/product.service';
+import { RouterModule } from '@angular/router';
+
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, ProductsListComponent, RouterOutlet, HeaderComponent],
+  imports: [CommonModule, RouterOutlet, HeaderComponent, RouterModule],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
 })

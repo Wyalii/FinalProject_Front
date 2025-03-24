@@ -1,0 +1,120 @@
+.filters-container
+{
+    position: relative;
+    width: 90%;
+    display: flex;
+    gap: 30px;
+    @media (max-width:640px) {
+        flex-direction: column;
+        align-items: start;
+        justify-content: center;
+    }
+}
+
+header{
+    display: flex;
+    border: 1px solid white;
+    border-radius: 8px;
+    @media (max-width:640px) {
+        width: 100%;
+    }
+}
+.category-open-btn button,.brand-open-btn button
+{
+    border: none;
+    padding:15px ;
+    border-radius: 8px;
+    font-size: medium;
+    width: 200px;
+    cursor: pointer;
+    background:none;
+
+}
+.category-open-btn,.brand-open-btn
+{
+    position: relative;
+}
+.arrow
+{
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+}
+.category-menu
+{
+    position: absolute;
+    z-index: 999;
+    width: 36%;
+    height: 200px;
+    background-color: white;
+    top: 60px;
+    left: 0;
+    border-radius: 8px;
+    box-shadow: 2px 2px 8px rgba(0, 0, 0.2, 0.2);
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    justify-content: center;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    @media (max-width:640px) {
+        width: 90%;
+    }
+    
+
+}
+.category
+{
+    padding-left: 5px;
+    display: flex;
+    cursor: pointer;
+    gap: 10px;
+}
+
+
+.brand-menu
+{
+    position: absolute;
+    z-index: 999;
+    top: 60px;
+    left: 0;
+    width: 36%;
+    height: 200px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 2px 2px 8px rgba(0, 0, 0.2, 0.2);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: start;
+    overflow-y: scroll;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    @media (max-width:640px) {
+        width: 90%;
+    }
+    
+
+}
+
+.brand-logo
+{
+    width: 40px;
+    height: 40px;
+}
+
+.brand{
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-left: 5px;
+}
+
+.blue
+{
+    color: #4E30D5;
+}

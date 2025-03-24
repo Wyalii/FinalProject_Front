@@ -11,4 +11,32 @@ body {
     color: #333;
   }
   
-  
+.filter-container
+{
+  width: 90%;
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  gap: 20px;
+  @media (max-width:700px) {
+    flex-direction: column;
+    width: 100%;
+  }
+}
+.cart-btn
+{
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  background-color: white;
+  border-radius: 8px;
+  border: none;
+  height: 200px;
+  width: 300px;
+  @media (max-width:700px) {
+    display: none;
+  }
+
+}
