@@ -8,7 +8,7 @@ import { ProductService } from './services/product.service';
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, ProductsListComponent, RouterOutlet],
+  imports: [CommonModule, ProductsListComponent, RouterOutlet, HeaderComponent],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
 })
