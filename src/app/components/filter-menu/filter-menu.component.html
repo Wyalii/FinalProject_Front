@@ -1,0 +1,40 @@
+<section class="filters-container">
+<header class="filter-btn-container">
+    <div class="category-open-btn"  (click)="handleCategoryMenu()">
+        <button [ngClass]="categoryMenu ? 'blue' : ''">Categories</button>
+        <img src="arrowdown-removebg-preview.png" class="arrow">
+      </div>
+      <div class="brand-open-btn" (click)="handleBrandMenu()" >
+        <button [ngClass]="brandMenu ? 'blue' : ''">Brands</button>
+        <img src="arrowdown-removebg-preview.png" class="arrow">
+      </div>
+</header>
+
+
+  <section *ngIf="categoryMenu" class="category-menu" @slideInTopToBottom>
+    <div class="category">
+        <img src="Vector.svg">
+        <p>Laptop</p>
+    </div>
+    <div  class="category">
+        <img src="VectorTv.svg">
+        <p>TV</p>
+    </div>
+
+    <div class="category">
+        <img src="tablet.svg">
+        <p>Tablet</p>
+    </div>
+    <div  class="category">
+        <img src="Group.svg">
+        <p>Phone</p>
+    </div>
+</section>
+<section *ngIf="brandMenu" class="brand-menu" @slideInTopToBottom>
+    <div class="brand" *ngFor="let brand of brandsArray">
+        <img [src]="brand" class="brand-logo"> 
+    </div>
+</section>
+
+</section>
+
