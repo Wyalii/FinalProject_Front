@@ -1,2 +1,40 @@
+
 <app-header></app-header>
 <router-outlet></router-outlet>
+<div *ngIf="products.length > 0; else noProducts">
+    <h1>{{ title }}</h1>
+    <div class="product-list">
+      <div *ngFor="let product of products" class="product-card">
+    
+        <img [src]="product.thumbnail" alt="{{ product.title }}" class="product-image" />
+  
+        <h3>{{ product.title }}</h3>
+       
+        <p>Price: {{ product.price.current }} {{ product.price.currency }}</p>
+        <p>Rating: {{product.rating}}</p>
+        <button class="add-to-cart-btn" (click)="addToCart(product)">Add to Cart</button>
+      </div>
+    </div>
+  
+    <div class="cart">
+      <h2>Your Cart</h2>
+      <div *ngIf="cart.length > 0; else emptyCart">
+        <ul>
+          <li *ngFor="let product of cart">
+            {{ product.title }} - {{ product.price.current }} {{ product.price.currency }}
+            <button class="remove-btn" (click)="removeFromCart(product.id)">Remove</button>
+          </li>
+        </ul>
+        <button class="checkout-btn" (click)="checkout()">Checkout</button>
+      </div>
+      <ng-template #emptyCart>
+        <p>Your cart is empty.</p>
+      </ng-template>
+    </div>
+  </div>
+  
+  <ng-template #noProducts>
+    <p>No products available at the moment.</p>
+  </ng-template>
+  
+
