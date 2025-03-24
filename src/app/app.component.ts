@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { HeaderComponent } from './components/header/header.component';
 import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
@@ -13,10 +13,11 @@ import { RouterModule } from '@angular/router';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   title = 'FinalProject_Front';
   products: Product[] = [];
   cart: Product[] = [];
+  errorMessage: string | null = null;
 
   constructor(private productService: ProductService) {}
 
@@ -24,14 +25,16 @@ export class AppComponent {
     this.loadProducts(32, 1);
   }
 
-  loadProducts(page_size: number, page_index: number): void {
-    this.productService.getProducts(page_size, page_index).subscribe({
+  loadProducts(pageSize: number, pageIndex: number): void {
+    this.productService.getProducts(pageSize, pageIndex).subscribe({
       next: (response) => {
         console.log('Products loaded:', response);
         this.products = response.products;
+        this.errorMessage = null;
       },
       error: (error) => {
         console.error('Error loading products:', error);
+        this.errorMessage = 'Failed to load products. Please try again.';
       },
     });
   }
@@ -45,13 +48,19 @@ export class AppComponent {
   }
 
   checkout(): void {
+    if (this.cart.length === 0) {
+      alert('Your cart is empty!');
+      return;
+    }
+
     this.productService.checkout(this.cart).subscribe({
-      next: (response) => {
+      next: () => {
         alert('Checkout successful!');
         this.cart = [];
       },
       error: (error) => {
         console.error('Checkout error:', error);
+        alert('Checkout failed. Please try again.');
       },
     });
   }

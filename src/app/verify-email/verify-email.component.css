@@ -1,0 +1,71 @@
+.email-verification-container {
+    width: 100%;
+    max-width: 400px;
+    margin: 50px auto;
+    padding: 20px;
+    background: #ffffff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    text-align: center;
+  }
+  
+
+  .email-verification-container h2 {
+    color: #333;
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+  
+  .email-verification-container input {
+    width: 100%;
+    padding: 10px;
+    margin: 8px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    transition: border-color 0.3s;
+  }
+  
+
+  .email-verification-container input:focus {
+    border-color: #007bff;
+    outline: none;
+  }
+  
+  .email-verification-container button {
+    width: 100%;
+    padding: 12px;
+    margin-top: 10px;
+    background: #007bff;
+    color: #ffffff;
+    border: none;
+    border-radius: 5px;
+    font-size: 18px;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+  
+  .email-verification-container button:hover {
+    background: #0056b3;
+  }
+  
+
+  .success-message {
+    color: green;
+    font-size: 14px;
+    margin-top: 10px;
+  }
+  
+  .error-message {
+    color: red;
+    font-size: 14px;
+    margin-top: 10px;
+  }
+  
+ 
+  @media (max-width: 480px) {
+    .email-verification-container {
+      width: 90%;
+    }
+  }
+  
