@@ -1,0 +1,12 @@
+<div class="email-verification-container">
+    <h2>Email Verification</h2>
+    
+    <form [formGroup]="emailVerificationForm" (ngSubmit)="onSubmit()">
+      <input type="email" formControlName="email" placeholder="Enter your email" />
+      <button type="submit">Verify Email</button>
+    </form>
+  
+    <p *ngIf="successMessage" class="success-message">{{ successMessage }}</p>
+    <p *ngIf="errorMessage" class="error-message">{{ errorMessage }}</p>
+  </div>
+  
