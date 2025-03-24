@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
 import { HeaderComponent } from './components/header/header.component';
 import { CommonModule } from '@angular/common';
 import { ProductsListComponent } from './components/products-list/products-list.component';
 import { RouterOutlet } from '@angular/router';
+import { Product } from './models/product.model';
+import { ProductService } from './services/product.service';
 @Component({
   selector: 'app-root',
   standalone: true,
@@ -11,7 +12,6 @@ import { RouterOutlet } from '@angular/router';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
 })
-
 export class AppComponent {
   title = 'FinalProject_Front';
   products: Product[] = [];
