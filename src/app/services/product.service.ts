@@ -17,8 +17,10 @@ export class ProductService {
     const url = `${this.apiUrl}?page_size=${page_size}&page_index=${page_index}`;
     return this.http.get<any>(url);  
   }
-
-
+  getProductById(id: string): Observable<Product> {
+    const productByIdUrl = 'http://localhost:5157/api/Product/GetById';
+    return this.http.get<Product>(`${productByIdUrl}/${id}`);
+  }
   addToCart(productId: number): Observable<any> {
     return this.http.post(`${this.cartApiUrl}/add`, { productId }); 
   }

@@ -36,7 +36,6 @@
     }
 }
 
-/* these are styles of a sec1 (website logo and search bar).*/
 .logo
 {
     width: 70px;
@@ -75,7 +74,7 @@ input[type="search"]::-webkit-search-cancel-button {
 }
 
 
-/* these are styles of sec2 (login and registration) */
+
 
 .signIn
 {

@@ -1,22 +1,25 @@
-import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
-import { HeaderComponent } from './components/header/header.component';
-import { CommonModule } from '@angular/common';
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { ProductService } from './services/product.service';
 import { Product } from './models/product.model';
-
+import { RouterOutlet } from '@angular/router';  
+import { CommonModule } from '@angular/common';
+import { HeaderComponent } from './components/header/header.component'; 
+import { RouterModule } from '@angular/router';  
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, HeaderComponent, CommonModule],
+  standalone: true,
+  imports: [CommonModule, RouterOutlet, HeaderComponent, RouterModule],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.css',
+  styleUrls: ['./app.component.css'],
+
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   title = 'FinalProject_Front';
   products: Product[] = [];
   cart: Product[] = [];
 
-  constructor(private productService: ProductService) {}
+  constructor(private productService: ProductService, private router: Router) {}
 
   ngOnInit(): void {
     this.loadProducts(32, 1);
@@ -39,7 +42,7 @@ export class AppComponent {
   }
 
   removeFromCart(productId: number): void {
-    this.cart = this.cart.filter((item) => item.id !== productId);
+    this.cart = this.cart.filter((item) => item.id !== productId.toString());
   }
 
   checkout(): void {
@@ -52,5 +55,9 @@ export class AppComponent {
         console.error('Checkout error:', error);
       },
     });
+  }
+
+  goToProductDetail(productId: string): void {
+    this.router.navigate(['/product', productId]);
   }
 }

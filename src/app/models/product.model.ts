@@ -14,11 +14,15 @@ export interface Price {
 }
 
 export interface Product {
-  id: number;
+  id: string; 
   title: string;
-  category: Category;
-  price: Price;
+  brand: string; 
+  price: Price; 
+  stock: number;
+  images: string[];
+  pCategory: number;
+  warranty: number; 
+  issueDate: string;
+  thumbnail: string; 
   description: string;
-  thumbnail: string;
-  rating: DecimalPipe; 
 }
