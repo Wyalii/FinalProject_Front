@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { animate, style, transition, trigger } from '@angular/animations';
+import { ProductService } from '../../services/product.service';
 @Component({
   selector: 'app-filter-menu',
   imports: [CommonModule],
@@ -25,15 +26,34 @@ import { animate, style, transition, trigger } from '@angular/animations';
   ],
 })
 export class FilterMenuComponent {
+  constructor(public productService: ProductService) {}
+  selectedCategory: string | null = null;
+  selectedBrand: string | null = null;
   categoryMenu: boolean = false;
   brandMenu: boolean = false;
-  brandsArray: any = [
-    'apple-removebg-preview.png',
-    'asuslogo-removebg-preview.png',
-    'google-removebg-preview.png',
-    'lenovo-removebg-preview.png',
-    'samsung-removebg-preview.png',
+  brandsArray: any[] = [
+    { name: 'apple', logo: 'apple-removebg-preview.png' },
+    { name: 'asus', logo: 'asuslogo-removebg-preview.png' },
+    { name: 'google', logo: 'google-removebg-preview.png' },
+    { name: 'lenovo', logo: 'lenovo-removebg-preview.png' },
+    { name: 'samsung', logo: 'samsung-removebg-preview.png' },
   ];
+  handleCategorySelect(categoryId: string) {
+    this.selectedCategory = categoryId;
+    this.filterProducts();
+  }
+
+  handleBrandSelect(brand: string) {
+    this.selectedBrand = brand;
+    this.filterProducts();
+  }
+
+  filterProducts() {
+    this.productService.getFilteredProducts(
+      this.selectedCategory,
+      this.selectedBrand
+    );
+  }
 
   handleCategoryMenu() {
     this.categoryMenu = !this.categoryMenu;
