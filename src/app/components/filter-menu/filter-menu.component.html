@@ -1,7 +1,7 @@
 <section class="filters-container">
 <header class="filter-btn-container">
-    <div class="category-open-btn"  (click)="handleCategoryMenu()">
-        <button [ngClass]="categoryMenu ? 'blue' : ''">Categories</button>
+    <div class="category-open-btn">
+        <button [ngClass]="categoryMenu ? 'blue' : ''" (click)="handleCategoryMenu()">Categories</button>
         <img src="arrowdown-removebg-preview.png" class="arrow">
       </div>
       <div class="brand-open-btn" (click)="handleBrandMenu()" >
@@ -12,7 +12,7 @@
 
 
   <section *ngIf="categoryMenu" class="category-menu" @slideInTopToBottom>
-    <div class="category">
+    <div class="category" (click)="handleCategorySelect('1')">
         <img src="Vector.svg">
         <p>Laptop</p>
     </div>
@@ -25,14 +25,14 @@
         <img src="tablet.svg">
         <p>Tablet</p>
     </div>
-    <div  class="category">
+    <div  class="category" (click)="handleCategorySelect('2')">
         <img src="Group.svg">
         <p>Phone</p>
     </div>
 </section>
 <section *ngIf="brandMenu" class="brand-menu" @slideInTopToBottom>
     <div class="brand" *ngFor="let brand of brandsArray">
-        <img [src]="brand" class="brand-logo"> 
+        <img [src]="brand.logo" class="brand-logo" (click)="handleBrandSelect(brand.name)"> 
     </div>
 </section>
 

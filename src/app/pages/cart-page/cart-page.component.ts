@@ -2,17 +2,20 @@ import { Component } from '@angular/core';
 import { ProductService } from '../../services/product.service';
 import { Product } from '../../models/product.model';
 import { CommonModule } from '@angular/common';
+
+
 @Component({
-  selector: 'app-products-list',
+  selector: 'app-cart-page',
   imports: [CommonModule],
-  templateUrl: './products-list.component.html',
-  styleUrl: './products-list.component.css',
+  templateUrl: './cart-page.component.html',
+  styleUrl: './cart-page.component.css'
 })
-export class ProductsListComponent {
-  title = 'Product List';
+export class CartPageComponent {
+  title = 'Cart';
+  products: Product[] = [];
   cart: Product[] = [];
 
-  constructor(public productService: ProductService) {}
+  constructor(private productService: ProductService) {}
 
   ngOnInit(): void {
     this.loadProducts(32, 1);
@@ -22,16 +25,12 @@ export class ProductsListComponent {
     this.productService.getProducts(page_size, page_index).subscribe({
       next: (response) => {
         console.log('Products loaded:', response);
-        this.productService.products = response.products;
+        this.products = response.products;
       },
       error: (error) => {
         console.error('Error loading products:', error);
       },
     });
-  }
-
-  addToCart(product: Product): void {
-    this.cart.push(product);
   }
 
   removeFromCart(productId: number): void {
@@ -49,4 +48,5 @@ export class ProductsListComponent {
       },
     });
   }
+
 }

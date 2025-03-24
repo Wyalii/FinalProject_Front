@@ -4,9 +4,10 @@ import { SignInComponent } from '../app/sign-in/sign-in.component';
 import { RegisterComponent } from '../app/register/register.component';
 import { EmailVerificationComponent } from '../app/verify-email/verify-email.component';
 import { SearchResultsComponent } from '../app/search-results/search-results.component';
-
+import { CartPageComponent } from './pages/cart-page/cart-page.component';
 export const routes: Routes = [
   { path: '', component: LandingPageComponent },
+  {path :'CartPage', component: CartPageComponent},
   { path: 'SignIn', component: SignInComponent },
   {path: 'Register', component: RegisterComponent},
   {path: 'verify-email', component: EmailVerificationComponent},
@@ -15,3 +16,4 @@ export const routes: Routes = [
   { path: '**', redirectTo: 'register' }
 //   { path: 'dashboard', loadComponent: () => import('./pages/dashboard/dashboard.component').then(m => m.DashboardComponent) }
 ];
+

@@ -1,6 +1,6 @@
-<div *ngIf="products.length > 0">
+<div *ngIf="this.productService.products">
     <div class="product-list">
-      <div *ngFor="let product of products" class="product-card">
+      <div *ngFor="let product of this.productService.products" class="product-card">
     
         <img [src]="product.thumbnail" alt="{{ product.title }}" class="product-image" />
   
@@ -14,6 +14,6 @@
   
     
   
-  <ng-template #noProducts>
-    <p>No products available at the moment.</p>
+  <ng-template #nothis.productService.products>
+    <p>No this.productService.products available at the moment.</p>
   </ng-template>
