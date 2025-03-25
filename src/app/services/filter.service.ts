@@ -29,4 +29,14 @@ export class FilterService {
       this.filterProducts();
     }
   }
+  clearFilters() {
+    const savedFilters = localStorage.getItem('Filters');
+    if (savedFilters) {
+      const filters = {
+        category: '',
+        brand: '',
+      };
+      localStorage.setItem('Filters', JSON.stringify(filters));
+    }
+  }
 }

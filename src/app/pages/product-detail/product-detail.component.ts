@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
-import { ProductService } from '../services/product.service';
-import { CartService } from '../services/cart.service';  
+
 import { CommonModule, DecimalPipe } from '@angular/common';
-import { Price, Product } from '../models/product.model';
-import { HeaderComponent } from '../components/header/header.component';
+
+import { ProductService } from '../../services/product.service';
+import { CartService } from '../../services/cart.service';
+import { Price, Product } from '../../models/product.model';
 
 @Component({
   selector: 'app-product-detail',
@@ -13,7 +14,7 @@ import { HeaderComponent } from '../components/header/header.component';
   imports: [CommonModule],
   templateUrl: './product-detail.component.html',
   styleUrls: ['./product-detail.component.css'],
-  providers: [CartService]
+  providers: [CartService],
 })
 export class ProductDetailComponent implements OnInit {
   product: any;
@@ -24,22 +25,18 @@ export class ProductDetailComponent implements OnInit {
     private route: ActivatedRoute,
     private http: HttpClient,
     private productService: ProductService,
-    private cartService: CartService  
+    private cartService: CartService
   ) {}
-
 
   ngOnInit(): void {
     const productId = this.route.snapshot.paramMap.get('id');
-    
+
     if (productId) {
       this.fetchProductDetails(productId);
     } else {
       console.error('Product ID is undefined');
     }
-
-   
   }
-
 
   fetchProductDetails(_id: string): void {
     const apiUrl = `http://localhost:5157/api/Product/GetProductsBy/${_id}`;
@@ -49,32 +46,31 @@ export class ProductDetailComponent implements OnInit {
       },
       error: (err) => {
         console.error('Error fetching product details:', err);
-      }
+      },
     });
   }
 
   addToCart(product: { id: string; name: string; price: Price }): void {
     const fullProduct: Product = {
-      _id: product.id,  
-      title: product.name,  
+      _id: product.id,
+      title: product.name,
       category: {
-        _id: 'default-category-id', 
-        name: 'default-category',  
-        description: 'Default category description',  
+        _id: 'default-category-id',
+        name: 'default-category',
+        description: 'Default category description',
       },
-      price: product.price,  
-      description: 'Default product description', 
+      price: product.price,
+      description: 'Default product description',
       thumbnail: 'default-thumbnail-url',
-      rating: 0, 
-      quantity: 1,  
-      issueDate: "2021-09-01T00:00:00", 
-      images: ['default-image-url'], 
+      rating: 0,
+      quantity: 1,
+      issueDate: '2021-09-01T00:00:00',
+      images: ['default-image-url'],
     };
-  
-    
+
     this.cartService.addToCart(fullProduct);
   }
-  
+
   selectedImage: string = '';
 
   checkout(): void {
@@ -93,7 +89,7 @@ export class ProductDetailComponent implements OnInit {
       error: (error) => {
         console.error('Checkout error:', error);
         alert('An error occurred during checkout.');
-      }
+      },
     });
   }
 }
