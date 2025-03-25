@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { animate, style, transition, trigger } from '@angular/animations';
 import { ProductService } from '../../services/product.service';
+import { FilterService } from '../../services/filter.service';
 @Component({
   selector: 'app-filter-menu',
   imports: [CommonModule],
@@ -25,8 +26,14 @@ import { ProductService } from '../../services/product.service';
     ]),
   ],
 })
-export class FilterMenuComponent {
-  constructor(public productService: ProductService) {}
+export class FilterMenuComponent implements OnInit {
+  constructor(
+    public productService: ProductService,
+    public filterService: FilterService
+  ) {}
+  ngOnInit(): void {
+    this.filterService.loadFilters();
+  }
   selectedCategory: string | null = null;
   selectedBrand: string | null = null;
   categoryMenu: boolean = false;
@@ -39,20 +46,13 @@ export class FilterMenuComponent {
     { name: 'samsung', logo: 'samsung-removebg-preview.png' },
   ];
   handleCategorySelect(categoryId: string) {
-    this.selectedCategory = categoryId;
-    this.filterProducts();
+    this.filterService.selectedCategory = categoryId;
+    this.filterService.filterProducts();
   }
 
   handleBrandSelect(brand: string) {
-    this.selectedBrand = brand;
-    this.filterProducts();
-  }
-
-  filterProducts() {
-    this.productService.getFilteredProducts(
-      this.selectedCategory,
-      this.selectedBrand
-    );
+    this.filterService.selectedBrand = brand;
+    this.filterService.filterProducts();
   }
 
   handleCategoryMenu() {
