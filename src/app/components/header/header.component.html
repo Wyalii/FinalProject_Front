@@ -1,20 +1,22 @@
 <header class="header">
-  <section class="sec1">
-    <img src="/logo.svg" class="logo" (click)="navigateTo('')">
-    <input type="search" placeholder="search..." class="search">
-    <img src="/search.png" class="search-logo" >
-  </section>
+    <section class="sec1">
+      <img src="/logo.svg" class="logo" (click)="navigateTo('')">
+      <input type="search" placeholder="search..." class="search" [(ngModel)]="keywords" (keydown.enter)="searchFunc(keywords)">
+      <img src="/search.png" class="search-logo" (click)="searchFunc(keywords)">
+    </section>
+  
+    <img src="/burger-menu.svg" class="hamburger-menu-logo">
+  
+    <section class="sec2">
+      <button class="btn" (click)="navigateTo('SignIn')">
+        <p>Sign In</p>
+        <img src="/signIn.png" class="signIn">
+      </button>
+      <button class="btn" (click)="navigateTo('Register')">
+        <p>Register</p>
+        <img src="guest.svg" class="guest">
+      </button>
+    </section>
+  </header>
+  
 
-  <img src="/burger-menu.svg" class="hamburger-menu-logo">
-
-  <section class="sec2">
-    <button class="btn" (click)="navigateTo('SignIn')">
-      <p>Sign In</p>
-      <img src="/signIn.png" class="signIn" style=" width: 38px;">
-    </button>
-    <button class="btn" (click)="navigateTo('Register')">
-      <p>Register</p>
-      <img src="guest.svg" class="guest">
-    </button>
-  </section>
-</header>

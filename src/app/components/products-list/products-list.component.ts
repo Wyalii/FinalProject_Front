@@ -17,7 +17,8 @@ export class ProductsListComponent {
   constructor(public productService: ProductService, private router: Router) {}
 
   ngOnInit(): void {
-    this.loadProducts(38, 1);
+
+    this.loadProducts(50, 1);
   }
 
   loadProducts(page_size: number, page_index: number): void {
@@ -33,7 +34,9 @@ export class ProductsListComponent {
   }
 
   viewProduct(productId: string): void {
+
     this.router.navigate(['/product-detail', productId]); 
+
   }
 
   addToCart(product: Product): void {

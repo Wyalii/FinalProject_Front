@@ -1,0 +1,21 @@
+<div class="register-container">
+    <h2>Register</h2>
+    
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+      <input type="text" formControlName="firstName" placeholder="First Name" required>
+      <input type="text" formControlName="lastName" placeholder="Last Name" required>
+      <input type="number" formControlName="age" placeholder="Age" required>
+      <input type="email" formControlName="email" placeholder="Email" required>
+      <input type="password" formControlName="password" placeholder="Password" required>
+      <input type="text" formControlName="address" placeholder="Address" required>
+      <input type="text" formControlName="phone" placeholder="Phone" required>
+      <input type="text" formControlName="zipcode" placeholder="Zip Code" required>
+      <input type="text" formControlName="avatar" placeholder="Avatar URL" required>
+      <input type="text" formControlName="gender" placeholder="Gender" required>
+  
+      <button type="submit" [disabled]="registerForm.invalid">Register</button>
+    </form>
+  
+    <p *ngIf="errorMessage" class="error-message">{{ errorMessage }}</p>
+  </div>
+  
