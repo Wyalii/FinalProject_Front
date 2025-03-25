@@ -1,15 +1,13 @@
 <div *ngIf="product" class="product-container">
-  <!-- Product Title -->
   <h1 class="product-title">{{ product.title }}</h1>
 
-  <!-- Main Product Image (Thumbnail) -->
   <img 
     [src]="selectedImage || product.thumbnail" 
     alt="{{ product.title }}" 
     class="product-thumbnail" 
   />
 
-  <!-- Image Gallery (Fixes Sizes) -->
+
   <div class="image-gallery">
     <img 
       *ngFor="let img of product.images" 
@@ -21,14 +19,33 @@
     />
   </div>
 
-  <!-- Product Details -->
+
   <div class="product-details">
     <p><strong>Price:</strong> {{ product.price.current }} {{ product.price.currency }}</p>
-    <p><strong>Rating:</strong> ⭐ {{ product.rating }}</p>
+
+   
+    <div class="rate-product">
+      <p><strong>Rate this product:</strong></p>
+
+    
+      <div class="star-rating">
+        <span *ngFor="let star of stars; let i = index" 
+              (click)="setRating(i + 1)" 
+              [class.filled]="i + 1 <= selectedRating">★</span>
+      </div>
+
+      <button class="rate-btn" (click)="rateProduct()">Submit Rating</button>
+
+   
+      <p *ngIf="ratingMessage" class="rating-message">{{ ratingMessage }}</p>
+      <p>Rating: {{product.rating}}</p>
+    </div>
+
+    <p><strong>Brand:</strong> {{ product.brand }}</p>
     <p><strong>Description:</strong> {{ product.description }}</p>
     <p><strong>Issue Date:</strong> {{ product.issueDate }}</p>
+    <p><strong>Stock:{{ product.stock }}</strong> </p>
   </div>
 
-  <!-- Add to Cart Button -->
   <button class="add-to-cart-btn" (click)="addToCart(product)">🛒 Add to Cart</button>
 </div>

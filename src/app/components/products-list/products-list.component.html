@@ -1,20 +1,26 @@
 <div *ngIf="this.productService.products">
   <div class="product-list">
-    <div *ngFor="let product of this.productService.products" class="product-card" (click)="viewProduct(product._id)">
+    <div *ngFor="let product of this.productService.products; let i = index" 
+         class="product-card" (click)="viewProduct(product._id)">
   
       <img [src]="product.thumbnail" alt="{{ product.title }}" class="product-image" />
 
       <h3>{{ product.title }}</h3>
      
-      <p>Price: {{ product.price.current }} {{ product.price.currency }}</p>
-      <p>Rating: {{product.rating}}</p>
-      <p>Id {{ product._id }}</p>
-      <button class="add-to-cart-btn" (click)="addToCart(product)">Add to Cart</button>
-    </div>
-  </div>
+      <p class="price">Price: {{ product.price.current }} {{ product.price.currency }}</p>
+      <p class="rating" style="color: #ff8d55;;">⭐ Rating: {{ product.rating }}</p>
 
-  
+    
+      <button class="add-to-cart-btn" (click)="addToCart(product)">
+        <span class="cart-icon">🛒</span> Add to Cart
+      </button>
+    </div>
+
+   
+   
+  </div>
+</div>
 
 <ng-template #nothis.productService.products>
-  <p>No this.productService.products available at the moment.</p>
+  <p>No products available at the moment.</p>
 </ng-template>

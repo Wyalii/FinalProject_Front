@@ -182,4 +182,19 @@
   .selected {
     border: 2px solid #007bff;
   }
-    
+
+.star-rating {
+    font-size: 24px;
+    cursor: pointer;
+    color: lightgray;
+  }
+  
+  .star-rating span {
+    padding: 5px;
+    transition: color 0.3s;
+  }
+  
+  .star-rating span.filled {
+    color: gold;
+  }
+  

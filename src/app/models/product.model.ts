@@ -24,4 +24,6 @@ export interface Product {
   quantity: number;
   issueDate: string;
   images: string[];  
+  brand: string;
+  stock: number;
 }
