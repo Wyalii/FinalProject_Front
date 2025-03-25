@@ -6,9 +6,9 @@
       <ul>
         <li *ngFor="let item of cart">
           <strong>{{ item.title }}</strong> - 
-          Quantity: {{ item.quantity }} - 
+          Quantity: {{ item.stock }} - 
           Price per item: {{ item.price.current }} {{ item.price.currency }} -
-          <strong>Total: {{ item.price.current * item.quantity }} {{ item.price.currency }}</strong>
+          <strong>Total: {{ item.price.current * item.stock }} {{ item.price.currency }}</strong>
         </li>
       </ul>
       

@@ -17,6 +17,7 @@ export class ProductsListComponent {
   constructor(public productService: ProductService, private router: Router) {}
 
   ngOnInit(): void {
+
     this.loadProducts(50, 1);
   }
 
@@ -33,13 +34,17 @@ export class ProductsListComponent {
   }
 
   viewProduct(productId: string): void {
-    this.router.navigate(['/product-detail', productId]);
+
+    this.router.navigate(['/product-detail', productId]); 
+
   }
 
   addToCart(product: Product): void {
     this.cart.push(product);
   }
-
+  isAdPosition(index: number): boolean {
+    return (index + 1) % 10 === 0;
+  }
   removeFromCart(productId: number): void {
     this.cart = this.cart.filter((item) => item._id !== productId.toString());
   }
