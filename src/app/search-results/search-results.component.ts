@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { SearchService } from '../services/search.service';  // Import SearchService
+import { SearchService } from '../services/search.service';  
 
 @Component({
   selector: 'app-search-results',
@@ -14,7 +14,7 @@ export class SearchResultsComponent implements OnInit {
   constructor(private route: ActivatedRoute, private searchService: SearchService) {}
 
   ngOnInit(): void {
-    // Get the search keyword from the route query params
+    
     this.route.queryParams.subscribe(params => {
       this.keyword = params['keyword'];
       this.searchProducts();
