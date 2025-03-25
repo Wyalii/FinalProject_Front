@@ -44,7 +44,8 @@ export class AppComponent implements OnInit {
   }
 
   removeFromCart(productId: number): void {
-    this.cart = this.cart.filter((item) => item.id !== productId);
+    this.cart = this.cart.filter((item) => item._id !== productId.toString());
+
   }
 
   checkout(): void {

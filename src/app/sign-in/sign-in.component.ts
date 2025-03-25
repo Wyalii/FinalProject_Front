@@ -26,21 +26,17 @@ export class SignInComponent {
     if (this.signInForm.valid) {
       const email = this.signInForm.value.email;
       const password = this.signInForm.value.password;
-
   
       const url = `http://localhost:5157/sign-in?Email=${encodeURIComponent(email)}&Password=${encodeURIComponent(password)}`;
-
-      
-      this.http.get<{ access_token: string; refresh_token: string }>(url)
+  
+      this.http.post<{ access_token: string; refresh_token: string }>(url, { Email: email, Password: password })
         .subscribe({
           next: (response) => {
             console.log('Sign-in successful:', response);
   
-            
             localStorage.setItem('access_token', response.access_token);
             localStorage.setItem('refresh_token', response.refresh_token);
-
-            
+  
             this.router.navigate(['/dashboard']);
           },
           error: (error) => {
@@ -56,4 +52,5 @@ export class SignInComponent {
       this.errorMessage = 'Please fill out the form correctly.';
     }
   }
+  
 }
