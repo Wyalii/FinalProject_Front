@@ -21,6 +21,7 @@ export class HeaderComponent {
 
   searchFunc(keywords: string) {
     this.filterService.clearFilters();
+    this.navigateTo('');
     this.searchService.searchProducts(keywords);
   }
   navigateTo(path: string): void {
