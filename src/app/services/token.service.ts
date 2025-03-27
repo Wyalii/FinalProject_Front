@@ -7,19 +7,26 @@ import { CookieService } from 'ngx-cookie-service';
 export class TokenService {
   constructor(private cookieService: CookieService) {}
 
-  setToken(name: string, value: string, days: number): void {
-    const expires = new Date();
-    expires.setTime(expires.getTime() + days * 24 * 60 * 60 * 1000);
-    document.cookie = `${name}=${encodeURIComponent(
-      value
-    )};expires=${expires.toUTCString()};path=/`;
+  setAccessToken(token: string): void {
+    console.log('Setting token in cookie:', token);
+    this.cookieService.set('access_token', token, {
+      expires: 1,
+      path: '/',
+    });
+  }
+  setRefreshToken(token: string) {
+    console.log('Setting token in cookie:', token);
+    this.cookieService.set('refresh_token', token, {
+      expires: 1,
+      path: '/',
+    });
   }
 
   getToken(): string | null {
-    return this.cookieService.get('auth_token');
+    return this.cookieService.get('access_token');
   }
 
   removeToken(): void {
-    this.cookieService.delete('auth_token', '/');
+    this.cookieService.delete('access_token', '/');
   }
 }

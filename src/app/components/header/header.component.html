@@ -1,4 +1,4 @@
-<header class="header">
+<header class="header"  *ngIf="!loading">
     <section class="sec1">
       <img src="/logo.svg" class="logo" (click)="navigateTo('')">
       <input type="search" placeholder="search..." class="search" [(ngModel)]="keywords" (keydown.enter)="searchFunc(keywords)">
@@ -8,13 +8,17 @@
     <img src="/burger-menu.svg" class="hamburger-menu-logo">
   
     <section class="sec2">
-      <button class="btn" (click)="navigateTo('SignIn')">
+      <button *ngIf="!token" class="btn" (click)="navigateTo('SignIn')">
         <p>Sign In</p>
         <img src="/signIn.png" class="signIn">
       </button>
-      <button class="btn" (click)="navigateTo('Register')">
+      <button *ngIf="!token" class="btn" (click)="navigateTo('Register')">
         <p>Register</p>
         <img src="guest.svg" class="guest">
+      </button>
+      <button *ngIf="token" (click)="navigateTo('/CartPage')" class="cart-btn">
+        <img src="CartImg.svg" class="cart-img">
+        <p>View Cart</p>
       </button>
     </section>
   </header>

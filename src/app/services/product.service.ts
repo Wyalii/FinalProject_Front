@@ -71,8 +71,10 @@ export class ProductService {
       .get<any>(url)
       .pipe(rxjsTap((response) => console.log('API Response:', response)));
   }
-  addToCart(productId: number): Observable<any> {
-    return this.http.post(`${this.cartApiUrl}/add`, { productId });
+  addToCart(productId: string, quantity: number): Observable<any> {
+    const url = 'http://localhost:5157/api/Cart/add-to-cart';
+    const body = { id: productId, quantity: quantity };
+    return this.http.patch(url, body);
   }
 
   removeFromCart(productId: number): Observable<any> {
