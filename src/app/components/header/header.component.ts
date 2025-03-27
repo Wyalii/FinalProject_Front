@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { FilterService } from '../../services/filter.service';
 import { TokenService } from '../../services/token.service';
 import { CommonModule } from '@angular/common';
+import { User } from '../../models/user.model';
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
@@ -15,7 +16,7 @@ export class HeaderComponent implements OnInit {
   searchKeyword: string = '';
   token: string | null = '';
   loading: boolean = true;
-
+  user: { firstname: string } | null = null;
   constructor(
     private router: Router,
     private searchService: SearchService,
@@ -25,6 +26,7 @@ export class HeaderComponent implements OnInit {
   ngOnInit(): void {
     this.token = this.tokenService.getToken();
     this.loading = false;
+    
   }
   keywords: string = '';
 

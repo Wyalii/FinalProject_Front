@@ -20,6 +20,11 @@
         <img src="CartImg.svg" class="cart-img">
         <p>View Cart</p>
       </button>
+      <button *ngIf="token" (click)="navigateTo('/UserPfp')" class="cart-btn">
+       
+        <p>{{user?.firstname}}</p>
+      </button>
+      
     </section>
   </header>
   

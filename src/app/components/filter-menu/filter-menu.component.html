@@ -1,40 +1,38 @@
 <section class="filters-container">
-<header class="filter-btn-container">
-    <div class="category-open-btn">
-        <button [ngClass]="categoryMenu ? 'blue' : ''" (click)="handleCategoryMenu()">Categories</button>
+    <header class="filter-btn-container">
+      <div class="category-open-btn">
+        <button [ngClass]="categoryMenu ? 'active' : ''" (click)="handleCategoryMenu()">Categories</button>
         <img src="arrowdown-removebg-preview.png" class="arrow">
       </div>
-      <div class="brand-open-btn" (click)="handleBrandMenu()" >
-        <button [ngClass]="brandMenu ? 'blue' : ''">Brands</button>
+      <div class="brand-open-btn" (click)="handleBrandMenu()">
+        <button [ngClass]="brandMenu ? 'active' : ''">Brands</button>
         <img src="arrowdown-removebg-preview.png" class="arrow">
       </div>
-</header>
-
-
-  <section *ngIf="categoryMenu" class="category-menu" @slideInTopToBottom>
-    <div class="category" (click)="handleCategorySelect('1')">
-        <img src="Vector.svg">
+    </header>
+  
+    <section *ngIf="categoryMenu" class="category-menu" @slideInTopToBottom>
+      <div class="category" (click)="handleCategorySelect('1')">
+        <img src="Vector.svg" alt="Laptop">
         <p>Laptop</p>
-    </div>
-    <div  class="category">
-        <img src="VectorTv.svg">
+      </div>
+      <div class="category">
+        <img src="VectorTv.svg" alt="TV">
         <p>TV</p>
-    </div>
-
-    <div class="category">
-        <img src="tablet.svg">
+      </div>
+      <div class="category">
+        <img src="tablet.svg" alt="Tablet">
         <p>Tablet</p>
-    </div>
-    <div  class="category" (click)="handleCategorySelect('2')">
-        <img src="Group.svg">
+      </div>
+      <div class="category" (click)="handleCategorySelect('2')">
+        <img src="Group.svg" alt="Phone">
         <p>Phone</p>
-    </div>
-</section>
-<section *ngIf="brandMenu" class="brand-menu" @slideInTopToBottom>
-    <div class="brand" *ngFor="let brand of brandsArray">
-        <img [src]="brand.logo" class="brand-logo" (click)="handleBrandSelect(brand.name)"> 
-    </div>
-</section>
-
-</section>
-
+      </div>
+    </section>
+  
+    <section *ngIf="brandMenu" class="brand-menu" @slideInTopToBottom>
+      <div class="brand" *ngFor="let brand of brandsArray">
+        <img [src]="brand.logo" class="brand-logo" (click)="handleBrandSelect(brand.name)">
+      </div>
+    </section>
+  </section>
+  

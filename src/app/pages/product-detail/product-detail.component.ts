@@ -1,33 +1,40 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
-import { CommonModule, DecimalPipe } from '@angular/common';
 import { ProductService } from '../../services/product.service';
-import { CartService } from '../../services/cart.service';
-import { Price, Product } from '../../models/product.model';
+import { CartService } from '../../services/cart.service';  
+import { CommonModule } from '@angular/common';
+import { Product } from '../../models/product.model';
 import { ToastrService } from 'ngx-toastr';
 import { TokenService } from '../../services/token.service';
+
+import { HeaderComponent } from '../../components/header/header.component';
 
 @Component({
   selector: 'app-product-detail',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule], 
   templateUrl: './product-detail.component.html',
   styleUrls: ['./product-detail.component.css'],
-  providers: [CartService],
+  providers: [CartService]
 })
 export class ProductDetailComponent implements OnInit {
-  product: any;
-  cart: any[] = [];
-  cartTotal: number = 0;
+  product: Product | null = null; 
+  cart: Product[] = [];
+  stars: number[] = [1, 2, 3, 4, 5];
+  
+  selectedRating: number = 0;
+  ratingMessage: string = '';
 
   constructor(
     private route: ActivatedRoute,
     private http: HttpClient,
-    private productService: ProductService,
     private toastr: ToastrService,
-    private tokenService: TokenService
+    private tokenService: TokenService,
+    private productService: ProductService
+
   ) {}
+
 
   ngOnInit(): void {
     const productId = this.route.snapshot.paramMap.get('id');
@@ -43,7 +50,7 @@ export class ProductDetailComponent implements OnInit {
     const apiUrl = `http://localhost:5157/api/Product/GetProductsBy/${_id}`;
     this.http.get(apiUrl).subscribe({
       next: (data) => {
-        this.product = data;
+        this.product = data as Product;
       },
       error: (error) => {
         this.toastr.error(`${error.error.error} `, 'Error');
@@ -89,5 +96,33 @@ export class ProductDetailComponent implements OnInit {
         alert('An error occurred during checkout.');
       },
     });
+  }
+  setRating(rating: number) {
+    this.selectedRating = rating;
+  }
+  rateProduct() {
+    if (!this.selectedRating) {
+      this.ratingMessage = "Please select a rating first!";
+      return;
+    }
+  
+    const ratingData = {
+      productId: this.product?._id, 
+      rate: this.selectedRating      
+    };
+  
+    console.log("Sending rating data:", ratingData);
+  
+    this.http.post('http://localhost:5157/api/Product/RateProduct', ratingData)
+      .subscribe({
+        next: response => {
+          this.ratingMessage = "✅thx for rating!";
+          this.selectedRating = 0;
+        },
+        error: error => {
+          console.error("Error submitting rating:", error);
+          this.ratingMessage = "❌ failed. try again";
+        }
+      });
   }
 }

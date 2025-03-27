@@ -19,10 +19,19 @@ export class CartService {
     return this.http.get<any>(this.getCartUrl, { headers });
   }
 
-  removeProductFromCart(productId: string) {
+  removeProductFromCart(productId: string, token: string | null) {
     console.log(productId);
-    const url = `http://localhost:5157/api/Cart/remove-from-cart/${productId}`;
-    return this.http.delete(url).subscribe(
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    });
+
+    const body = {
+      id: productId,
+    };
+
+    const url = `https://api.everrest.educata.dev/shop/cart/product`;
+    return this.http.delete(url, { headers, body }).subscribe(
       (data) => {
         this.toastr.success('Successfully Deleted a product', 'Success');
         console.log(data);

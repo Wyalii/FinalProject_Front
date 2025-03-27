@@ -1,4 +1,4 @@
-<div *ngIf="this.productService.products">
+<div *ngIf="this.productService.products; else loadingState">
   <div class="product-list">
     <div *ngFor="let product of this.productService.products; let i = index" 
          class="product-card" (click)="viewProduct(product._id)">
@@ -8,19 +8,18 @@
       <h3>{{ product.title }}</h3>
      
       <p class="price">Price: {{ product.price.current }} {{ product.price.currency }}</p>
-      <p class="rating" style="color: #ff8d55;;">⭐ Rating: {{ product.rating }}</p>
+      <p class="rating" style="color: #ff8d55;">⭐ Rating: {{ product.rating }}</p>
 
-    
       <button class="add-to-cart-btn" (click)="addToCartFunc(product._id,1)">
         <span class="cart-icon">🛒</span> Add to Cart
       </button>
     </div>
-
-   
-   
   </div>
 </div>
 
-<ng-template #nothis.productService.products>
-  <p>No products available at the moment.</p>
+<ng-template #loadingState>
+  <div class="loading-container">
+    <div class="loading-text">Loading Products...</div>
+    <div class="spinner"></div>
+  </div>
 </ng-template>
