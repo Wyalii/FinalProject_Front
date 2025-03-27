@@ -10,13 +10,17 @@ import { ReactiveFormsModule } from '@angular/forms';
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './register.component.html',
-  styleUrls: ['./register.component.css']
+  styleUrls: ['./register.component.css'],
 })
 export class RegisterComponent {
   registerForm: FormGroup;
   errorMessage: string | null = null;
 
-  constructor(private fb: FormBuilder, private http: HttpClient, private router: Router) {
+  constructor(
+    private fb: FormBuilder,
+    private http: HttpClient,
+    private router: Router
+  ) {
     this.registerForm = this.fb.group({
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
@@ -27,7 +31,7 @@ export class RegisterComponent {
       phone: ['', Validators.required],
       zipcode: ['', Validators.required],
       avatar: ['', Validators.required],
-      gender: ['', Validators.required]
+      gender: ['', Validators.required],
     });
   }
 
@@ -35,24 +39,21 @@ export class RegisterComponent {
     if (this.registerForm.valid) {
       const formData = this.registerForm.value;
 
-     
-      this.http.post('http://localhost:5157/sign-up', formData)
-        .subscribe({
-          next: (response) => {
-            console.log('Registration successful:', response);
-
-            
-            this.router.navigate(['/sign-in']);
-          },
-          error: (error) => {
-            console.error('Registration failed:', error);
-            if (error.error && error.error.message) {
-              this.errorMessage = error.error.message;
-            } else {
-              this.errorMessage = 'An unexpected error occurred. Please try again.';
-            }
+      this.http.post('http://localhost:5157/sign-up', formData).subscribe({
+        next: (response) => {
+          console.log('Registration successful:', response);
+          this.router.navigate(['/sign-in']);
+        },
+        error: (error) => {
+          console.error('Registration failed:', error);
+          if (error.error && error.error.message) {
+            this.errorMessage = error.error.message;
+          } else {
+            this.errorMessage =
+              'An unexpected error occurred. Please try again.';
           }
-        });
+        },
+      });
     } else {
       this.errorMessage = 'Please fill out all required fields correctly.';
     }
