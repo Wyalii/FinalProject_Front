@@ -26,7 +26,27 @@ export class CartPageComponent implements OnInit {
   removeFromCartFunc(productId: string, token: string | null) {
     this.cartService.removeProductFromCart(productId, token);
   }
-  clearCart() {}
+  clearCart(): void {
+    if (this.UserCart.length === 0) {
+      this.toastr.warning('Cart is already empty!', 'Warning');
+      return;
+    }
+  
+    this.cartService.clearCart(this.UserCart).subscribe(
+      () => {
+        this.toastr.success('Cart cleared successfully!', 'Success');
+        this.UserCart = [];
+        this.UserProducts = [];
+        this.totalPrice = '0';
+        this.beforeDiscountPrice = '0';
+      },
+      (error) => {
+        console.error('Error clearing cart:', error);
+        this.toastr.error('Failed to clear cart', 'Error');
+      }
+    );
+  }
+
   title = 'Cart';
   UserProductsIds: any = [];
   UserCart: any = [];
@@ -82,5 +102,17 @@ export class CartPageComponent implements OnInit {
     });
   }
 
-  checkout() {}
+  checkout(): void {
+    this.cartService.checkout().subscribe(
+      (response) => {
+        
+        this.toastr.success('Checkout successful! Cart is now empty.', 'Success');
+      },
+      (error) => {
+        
+        console.error('Error during checkout:', error);
+        this.toastr.error('Checkout failed!', 'Error');
+      }
+    );
+  }
 }

@@ -77,21 +77,10 @@ export class ProductService {
     return this.http.post(url, body);
   }
 
-  removeFromCart(productId: number): Observable<any> {
-    return this.http.delete(`${this.cartApiUrl}/remove/${productId}`);
-  }
-
   getCart(): Observable<Product[]> {
     return this.http.get<Product[]>(this.cartApiUrl);
   }
 
-  clearCart(): Observable<any> {
-    return this.http.delete(`${this.cartApiUrl}/clear`);
-  }
-
-  checkout(cart: Product[]): Observable<any> {
-    return this.http.post(`${this.cartApiUrl}/checkout`, cart);
-  }
 }
 
 function tap<T>(

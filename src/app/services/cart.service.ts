@@ -1,15 +1,31 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { forkJoin, Observable,throwError } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { ToastrService } from 'ngx-toastr';
+import { TokenService } from './token.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class CartService {
   private getCartUrl = 'http://localhost:5157/api/Cart/get-cart';
+  private apiUrl = 'https://api.everrest.educata.dev/shop/cart';
   public Cart: any;
-  constructor(private http: HttpClient, private toastr: ToastrService) {}
+  constructor(private http: HttpClient, private toastr: ToastrService,private tokenService: TokenService) {}
+
+  getHeaders(): HttpHeaders {
+    const token = this.tokenService.getToken();
+
+    if (!token) {
+      this.toastr.error('Authentication token is missing!', 'Error');
+      throw new Error('No token found.');
+    }
+
+    return new HttpHeaders()
+      .set('Authorization', `Bearer ${token}`)
+      .set('Content-Type', 'application/json');
+  }
+
   getCart(token: string | null): Observable<any> {
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
@@ -60,5 +76,46 @@ export class CartService {
         this.toastr.error(`${error.error.error}`, 'Error');
       }
     );
+  }
+  clearCart(products: any[]): Observable<any> {
+    const token = this.tokenService.getToken();
+  
+    if (!token) {
+      this.toastr.error('Authentication token is missing!', 'Error');
+      return throwError(() => new Error('No token found.'));
+    }
+  
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    });
+  
+   
+    const deleteRequests = products.map((product) => {
+      const body = { id: product.productId };
+      return this.http.request('DELETE', 'https://api.everrest.educata.dev/shop/cart/product', { 
+        headers, 
+        body 
+      });
+    });
+  
+    return forkJoin(deleteRequests); 
+  }
+  
+  checkout(): Observable<any> {
+    const token = this.tokenService.getToken();
+  
+    if (!token) {
+      this.toastr.error('Authentication token is missing!', 'Error');
+      return throwError(() => new Error('No token found.'));
+    }
+  
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    });
+  
+    
+    return this.http.post('http://localhost:5157/api/Cart/cart-checkout', {}, { headers });
   }
 }

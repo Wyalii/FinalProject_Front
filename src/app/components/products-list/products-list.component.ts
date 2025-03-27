@@ -6,6 +6,7 @@ import { CommonModule } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
 import { TokenService } from '../../services/token.service';
 import { CartService } from '../../services/cart.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-products-list',
@@ -37,7 +38,7 @@ export class ProductsListComponent {
         this.productService.products = response.products;
       },
       error: (error) => {
-        this.toastr.error(`${error.error.error} `, 'Error');
+        this.toastr.error(`${error.error.error}`, 'Error');
       },
     });
     this.loading = false;
@@ -47,57 +48,57 @@ export class ProductsListComponent {
     this.router.navigate(['/product-detail', productId]);
   }
 
+  checkCart(token: string | null): Observable<boolean> {
+    return new Observable((observer) => {
+      this.cartService.getCart(token).subscribe(
+        (data) => {
+          console.log(data);
+          observer.next(true);
+          observer.complete();
+        },
+        (error) => {
+          console.log(error);
+          observer.next(false);
+          observer.complete();
+        }
+      );
+    });
+  }
   addToCartFunc(productId: string, quantity: number): void {
     let token: string | null = this.tokenService.getToken();
 
-    if (!this.cartService.getCart(token)) {
-      if (this.tokenService.getToken()) {
-        this.productService.addToCart(productId, quantity).subscribe(
-          (data) => {
-            this.toastr.success('Added Item To a Cart!', 'Success');
-            console.log(data);
-            return data;
-          },
-          (error) => {
-            this.toastr.error(`${error.error.error} `, 'Error');
-            console.log(error);
-          }
-        );
-      } else {
-        this.toastr.error('User is Not Singed In!', 'Error');
-      }
+    if (token) {
+      this.checkCart(token).subscribe((cartExists) => {
+        if (!cartExists) {
+          this.productService.addToCart(productId, quantity).subscribe(
+            (data) => {
+              this.toastr.success('Item added to cart!', 'Success');
+              console.log(data);
+            },
+            (error) => {
+              this.toastr.error(`${error.error.error}`, 'Error');
+              console.log(error);
+            }
+          );
+        } else {
+          this.cartService.updateCart(token, productId, quantity).subscribe(
+            (data) => {
+              this.toastr.success('Item added to cart!', 'Success');
+              console.log(data);
+            },
+            (error) => {
+              this.toastr.error(`${error.error.error}`, 'Error');
+              console.log(error);
+            }
+          );
+        }
+      });
     } else {
-      if (this.tokenService.getToken()) {
-        this.cartService.updateCart(token, productId, quantity).subscribe(
-          (data) => {
-            this.toastr.success('Added Item To a Cart!', 'Success');
-            console.log(data);
-            return data;
-          },
-          (error) => {
-            this.toastr.error(`${error.error.error} `, 'Error');
-            console.log(error);
-          }
-        );
-      } else {
-        this.toastr.error('User is Not Singed In!', 'Error');
-      }
+      this.toastr.error('User is not signed in!', 'Error');
     }
   }
 
-  removeFromCart(productId: number): void {
-    this.cart = this.cart.filter((item) => item._id !== productId.toString());
-  }
+  
 
-  checkout(): void {
-    this.productService.checkout(this.cart).subscribe({
-      next: (response) => {
-        alert('Checkout successful!');
-        this.cart = [];
-      },
-      error: (error) => {
-        this.toastr.error(`${error.error.error} `, 'Error');
-      },
-    });
-  }
+  
 }
