@@ -15,18 +15,6 @@ import { HttpClient } from '@angular/common/http';
   styleUrls: ['./cart-page.component.css'],
 })
 export class CartPageComponent implements OnInit {
-  removeFromCart(arg0: any) {
-    throw new Error('Method not implemented.');
-  }
-  clearCart() {
-    throw new Error('Method not implemented.');
-  }
-  title = 'Cart';
-  UserProductsIds: any = [];
-  UserCart: any = [];
-  UserProducts: any = [];
-  totalPrice: string = '';
-  beforeDiscountPrice: string = '';
   constructor(
     private productService: ProductService,
     public cartService: CartService,
@@ -34,6 +22,17 @@ export class CartPageComponent implements OnInit {
     private toastr: ToastrService,
     private http: HttpClient
   ) {}
+
+  removeFromCartFunc(productId: string) {
+    this.cartService.removeProductFromCart(productId);
+  }
+  clearCart() {}
+  title = 'Cart';
+  UserProductsIds: any = [];
+  UserCart: any = [];
+  UserProducts: any = [];
+  totalPrice: string = '';
+  beforeDiscountPrice: string = '';
 
   ngOnInit(): void {
     const token = this.tokenService.getToken();

@@ -1,9 +1,7 @@
-import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
-import { isPlatformBrowser } from '@angular/common';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { Product } from '../models/product.model';
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { error } from 'console';
+import { ToastrService } from 'ngx-toastr';
 
 @Injectable({
   providedIn: 'root',
@@ -11,7 +9,7 @@ import { error } from 'console';
 export class CartService {
   private getCartUrl = 'http://localhost:5157/api/Cart/get-cart';
   public Cart: any;
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private toastr: ToastrService) {}
   getCart(token: string): Observable<any> {
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
@@ -19,5 +17,20 @@ export class CartService {
     });
 
     return this.http.get<any>(this.getCartUrl, { headers });
+  }
+
+  removeProductFromCart(productId: string) {
+    console.log(productId);
+    const url = `http://localhost:5157/api/Cart/remove-from-cart/${productId}`;
+    return this.http.delete(url).subscribe(
+      (data) => {
+        this.toastr.success('Successfully Deleted a product', 'Success');
+        console.log(data);
+      },
+      (error) => {
+        console.log(error);
+        this.toastr.error(`${error.error.error}`, 'Error');
+      }
+    );
   }
 }
