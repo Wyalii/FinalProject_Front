@@ -51,9 +51,9 @@ export class ProductDetailComponent implements OnInit {
     });
   }
 
-  addToCart(product: Product): void {
-    this.cartService.addToCart(product);
-  }
+  // addToCart(product: Product): void {
+  //   this.cartService.addToCart(product);
+  // }
 
   setRating(rating: number) {
     this.selectedRating = rating;
