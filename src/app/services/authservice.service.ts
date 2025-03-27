@@ -52,7 +52,7 @@ export class AuthService {
       },
       (error) => {
         console.error('Registration failed:', error);
-        this.toastr.error('User SignUp Failed!', 'Error');
+        this.toastr.error(`${error.error.error} `, 'Error');
       }
     );
   }

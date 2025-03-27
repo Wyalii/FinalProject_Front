@@ -45,8 +45,8 @@ export class ProductDetailComponent implements OnInit {
       next: (data) => {
         this.product = data;
       },
-      error: (err) => {
-        console.error('Error fetching product details:', err);
+      error: (error) => {
+        this.toastr.error(`${error.error.error} `, 'Error');
       },
     });
   }
@@ -60,7 +60,7 @@ export class ProductDetailComponent implements OnInit {
           return data;
         },
         (error) => {
-          this.toastr.error('add Item To a Cart Failed!', 'Error');
+          this.toastr.error(`${error.error.error} `, 'Error');
           console.log(error);
         }
       );

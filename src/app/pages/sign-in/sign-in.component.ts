@@ -46,7 +46,7 @@ export class SignInComponent {
         },
         error: (error) => {
           console.error('Sign-in failed:', error);
-          this.toastr.error('User SingIn Failed!', 'Error');
+          this.toastr.error(`${error.error.error} `, 'Error');
         },
       });
   }

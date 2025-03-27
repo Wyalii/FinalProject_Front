@@ -35,7 +35,7 @@ export class ProductsListComponent {
         this.productService.products = response.products;
       },
       error: (error) => {
-        console.error('Error loading products:', error);
+        this.toastr.error(`${error.error.error} `, 'Error');
       },
     });
     this.loading = false;
@@ -54,7 +54,7 @@ export class ProductsListComponent {
           return data;
         },
         (error) => {
-          this.toastr.error('add Item To a Cart Failed!', 'Error');
+          this.toastr.error(`${error.error.error} `, 'Error');
           console.log(error);
         }
       );
@@ -74,7 +74,7 @@ export class ProductsListComponent {
         this.cart = [];
       },
       error: (error) => {
-        console.error('Checkout error:', error);
+        this.toastr.error(`${error.error.error} `, 'Error');
       },
     });
   }
