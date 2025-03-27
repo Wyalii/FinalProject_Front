@@ -1,0 +1,25 @@
+<div class="cart-container">
+  <h1 class="cart-title">🛒 Your Cart</h1>
+
+  <div *ngIf="cartItems.length > 0; else emptyCart" class="cart-list">
+    <div class="cart-item" *ngFor="let item of cartItems">
+      <img [src]="item.thumbnail" alt="{{ item.title }}" class="cart-image" />
+
+      <div class="cart-details">
+        <h3 class="cart-item-title">{{ item.title }}</h3>
+        <p class="cart-item-price">💲{{ item.price.current }} {{ item.price.currency }}</p>
+      </div>
+
+      <button class="remove-btn" (click)="removeFromCart(item._id)">❌ Remove</button>
+    </div>
+
+    <div class="cart-footer">
+      <button class="checkout-btn" (click)="checkout()">🛍 Checkout</button>
+      <button class="clear-cart-btn" (click)="clearCart()">🗑 Clear Cart</button>
+    </div>
+  </div>
+
+  <ng-template #emptyCart>
+    <p class="empty-message">😢 Your cart is empty. Start shopping now!</p>
+  </ng-template>
+</div>
