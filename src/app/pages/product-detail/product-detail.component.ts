@@ -2,27 +2,25 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { ProductService } from '../../services/product.service';
-import { CartService } from '../../services/cart.service';  
+import { CartService } from '../../services/cart.service';
 import { CommonModule } from '@angular/common';
 import { Product } from '../../models/product.model';
 import { ToastrService } from 'ngx-toastr';
 import { TokenService } from '../../services/token.service';
 
-import { HeaderComponent } from '../../components/header/header.component';
-
 @Component({
   selector: 'app-product-detail',
   standalone: true,
-  imports: [CommonModule], 
+  imports: [CommonModule],
   templateUrl: './product-detail.component.html',
   styleUrls: ['./product-detail.component.css'],
-  providers: [CartService]
+  providers: [CartService],
 })
 export class ProductDetailComponent implements OnInit {
-  product: Product | null = null; 
+  product: Product | null = null;
   cart: Product[] = [];
   stars: number[] = [1, 2, 3, 4, 5];
-  
+
   selectedRating: number = 0;
   ratingMessage: string = '';
 
@@ -31,14 +29,12 @@ export class ProductDetailComponent implements OnInit {
     private http: HttpClient,
     private toastr: ToastrService,
     private tokenService: TokenService,
-    private productService: ProductService
-
+    private productService: ProductService,
+    private cartService: CartService
   ) {}
-
 
   ngOnInit(): void {
     const productId = this.route.snapshot.paramMap.get('id');
-
     if (productId) {
       this.fetchProductDetails(productId);
     } else {
@@ -59,20 +55,40 @@ export class ProductDetailComponent implements OnInit {
   }
 
   addToCartFunc(productId: string, quantity: number): void {
-    if (this.tokenService.getToken()) {
-      this.productService.addToCart(productId, quantity).subscribe(
-        (data) => {
-          this.toastr.success('Added Item To a Cart!', 'Success');
-          console.log(data);
-          return data;
-        },
-        (error) => {
-          this.toastr.error(`${error.error.error} `, 'Error');
-          console.log(error);
-        }
-      );
+    let token: string | null = this.tokenService.getToken();
+
+    if (!this.cartService.getCart(token)) {
+      if (this.tokenService.getToken()) {
+        this.productService.addToCart(productId, quantity).subscribe(
+          (data) => {
+            this.toastr.success('Added Item To a Cart!', 'Success');
+            console.log(data);
+            return data;
+          },
+          (error) => {
+            this.toastr.error(`${error.error.error} `, 'Error');
+            console.log(error);
+          }
+        );
+      } else {
+        this.toastr.error('User is Not Singed In!', 'Error');
+      }
     } else {
-      this.toastr.error('User is Not Singed In!', 'Error');
+      if (this.tokenService.getToken()) {
+        this.cartService.updateCart(token, productId, quantity).subscribe(
+          (data) => {
+            this.toastr.success('Added Item To a Cart!', 'Success');
+            console.log(data);
+            return data;
+          },
+          (error) => {
+            this.toastr.error(`${error.error.error} `, 'Error');
+            console.log(error);
+          }
+        );
+      } else {
+        this.toastr.error('User is Not Singed In!', 'Error');
+      }
     }
   }
 
@@ -102,27 +118,28 @@ export class ProductDetailComponent implements OnInit {
   }
   rateProduct() {
     if (!this.selectedRating) {
-      this.ratingMessage = "Please select a rating first!";
+      this.ratingMessage = 'Please select a rating first!';
       return;
     }
-  
+
     const ratingData = {
-      productId: this.product?._id, 
-      rate: this.selectedRating      
+      productId: this.product?._id,
+      rate: this.selectedRating,
     };
-  
-    console.log("Sending rating data:", ratingData);
-  
-    this.http.post('http://localhost:5157/api/Product/RateProduct', ratingData)
+
+    console.log('Sending rating data:', ratingData);
+
+    this.http
+      .post('http://localhost:5157/api/Product/RateProduct', ratingData)
       .subscribe({
-        next: response => {
-          this.ratingMessage = "✅thx for rating!";
+        next: (response) => {
+          this.ratingMessage = '✅thx for rating!';
           this.selectedRating = 0;
         },
-        error: error => {
-          console.error("Error submitting rating:", error);
-          this.ratingMessage = "❌ failed. try again";
-        }
+        error: (error) => {
+          console.error('Error submitting rating:', error);
+          this.ratingMessage = '❌ failed. try again';
+        },
       });
   }
 }
