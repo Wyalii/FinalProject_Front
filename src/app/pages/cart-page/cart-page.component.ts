@@ -22,9 +22,9 @@ export class CartPageComponent implements OnInit {
     private toastr: ToastrService,
     private http: HttpClient
   ) {}
-
-  removeFromCartFunc(productId: string) {
-    this.cartService.removeProductFromCart(productId);
+  token: string | null = '';
+  removeFromCartFunc(productId: string, token: string | null) {
+    this.cartService.removeProductFromCart(productId, token);
   }
   clearCart() {}
   title = 'Cart';
@@ -36,6 +36,7 @@ export class CartPageComponent implements OnInit {
 
   ngOnInit(): void {
     const token = this.tokenService.getToken();
+    this.token = token;
     this.getCartFunc(token);
   }
 
