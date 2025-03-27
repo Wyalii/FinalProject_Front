@@ -5,8 +5,8 @@ import { CartService } from '../../services/cart.service';
 import { CommonModule } from '@angular/common';
 import { forkJoin } from 'rxjs';
 import { TokenService } from '../../services/token.service';
-import { error } from 'console';
 import { ToastrService } from 'ngx-toastr';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-cart-page',
@@ -15,6 +15,12 @@ import { ToastrService } from 'ngx-toastr';
   styleUrls: ['./cart-page.component.css'],
 })
 export class CartPageComponent implements OnInit {
+  removeFromCart(arg0: any) {
+    throw new Error('Method not implemented.');
+  }
+  clearCart() {
+    throw new Error('Method not implemented.');
+  }
   title = 'Cart';
   UserProductsIds: any = [];
   UserCart: any = [];
@@ -25,7 +31,8 @@ export class CartPageComponent implements OnInit {
     private productService: ProductService,
     public cartService: CartService,
     private tokenService: TokenService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private http: HttpClient
   ) {}
 
   ngOnInit(): void {
@@ -74,4 +81,6 @@ export class CartPageComponent implements OnInit {
       console.log('Fetched User Products:', this.UserProducts);
     });
   }
+
+  checkout() {}
 }
