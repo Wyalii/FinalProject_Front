@@ -16,7 +16,7 @@ export class ProductService {
   private apiUrl = 'http://localhost:5157/api/Product/GetAll';
   private cartApiUrl = 'http://localhost:5157/api/Cart';
 
-  constructor(private http: HttpClient, private cartService: CartService) {}
+  constructor(private http: HttpClient, ) {}
 
   getProductById(productId: string): Observable<any> {
     const url = `http://localhost:5157/api/Product/GetProductsBy/${productId}`;
