@@ -74,7 +74,7 @@ export class ProductService {
   addToCart(productId: string, quantity: number): Observable<any> {
     const url = 'http://localhost:5157/api/Cart/add-to-cart';
     const body = { id: productId, quantity: quantity };
-    return this.http.patch(url, body);
+    return this.http.post(url, body);
   }
 
   removeFromCart(productId: number): Observable<any> {

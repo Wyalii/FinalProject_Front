@@ -48,27 +48,16 @@ export class ProductDetailComponent implements OnInit {
     });
   }
 
-  addToCart(product: { id: string; name: string; price: Price }): void {
-    const fullProduct: Product = {
-      _id: product.id,
-      title: product.name,
-      category: {
-        _id: 'default-category-id',
-        name: 'default-category',
-        description: 'Default category description',
+  addToCartFunc(productId: string, quantity: number): void {
+    this.productService.addToCart(productId, quantity).subscribe(
+      (data) => {
+        console.log(data);
+        return data;
       },
-      price: product.price,
-      description: 'Default product description',
-      thumbnail: 'default-thumbnail-url',
-      rating: 0,
-      quantity: 1,
-      issueDate: '2021-09-01T00:00:00',
-      images: ['default-image-url'],
-      brand: '',
-      stock: 0,
-    };
-
-    // this.cartService.addToCart(fullProduct);
+      (error) => {
+        console.log(error);
+      }
+    );
   }
 
   selectedImage: string = '';
