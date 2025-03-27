@@ -5,6 +5,7 @@ import { Product } from '../../models/product.model';
 import { CommonModule } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
 import { TokenService } from '../../services/token.service';
+import { CartService } from '../../services/cart.service';
 
 @Component({
   selector: 'app-products-list',
@@ -21,7 +22,8 @@ export class ProductsListComponent {
     public productService: ProductService,
     private router: Router,
     private toastr: ToastrService,
-    private tokenService: TokenService
+    private tokenService: TokenService,
+    private cartService: CartService
   ) {}
 
   ngOnInit(): void {
@@ -46,20 +48,40 @@ export class ProductsListComponent {
   }
 
   addToCartFunc(productId: string, quantity: number): void {
-    if (this.tokenService.getToken()) {
-      this.productService.addToCart(productId, quantity).subscribe(
-        (data) => {
-          console.log(data);
-          this.toastr.success('Added Item To a Cart!', 'Success');
-          return data;
-        },
-        (error) => {
-          console.error('Error details:', error); 
-          this.toastr.error(`${error.error.error || 'An error occurred'} `, 'Error');
-        }
-      );
+    let token: string | null = this.tokenService.getToken();
+
+    if (!this.cartService.getCart(token)) {
+      if (this.tokenService.getToken()) {
+        this.productService.addToCart(productId, quantity).subscribe(
+          (data) => {
+            this.toastr.success('Added Item To a Cart!', 'Success');
+            console.log(data);
+            return data;
+          },
+          (error) => {
+            this.toastr.error(`${error.error.error} `, 'Error');
+            console.log(error);
+          }
+        );
+      } else {
+        this.toastr.error('User is Not Singed In!', 'Error');
+      }
     } else {
-      this.toastr.error('User is Not Signed In!', 'Error');
+      if (this.tokenService.getToken()) {
+        this.cartService.updateCart(token, productId, quantity).subscribe(
+          (data) => {
+            this.toastr.success('Added Item To a Cart!', 'Success');
+            console.log(data);
+            return data;
+          },
+          (error) => {
+            this.toastr.error(`${error.error.error} `, 'Error');
+            console.log(error);
+          }
+        );
+      } else {
+        this.toastr.error('User is Not Singed In!', 'Error');
+      }
     }
   }
 
