@@ -54,12 +54,12 @@ export class ProductsListComponent {
           return data;
         },
         (error) => {
-          this.toastr.error(`${error.error.error} `, 'Error');
-          console.log(error);
+          console.error('Error details:', error); 
+          this.toastr.error(`${error.error.error || 'An error occurred'} `, 'Error');
         }
       );
     } else {
-      this.toastr.error('User is Not Singed In!', 'Error');
+      this.toastr.error('User is Not Signed In!', 'Error');
     }
   }
 
