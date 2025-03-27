@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { Product } from '../models/product.model';
 import { CartService } from './cart.service';
 import { tap as rxjsTap } from 'rxjs/operators';
+import { error } from 'console';
 
 @Injectable({
   providedIn: 'root',
@@ -14,7 +15,13 @@ export class ProductService {
 
   private apiUrl = 'http://localhost:5157/api/Product/GetAll';
   private cartApiUrl = 'http://localhost:5157/api/Cart';
+
   constructor(private http: HttpClient, private cartService: CartService) {}
+
+  getProductById(productId: string): Observable<any> {
+    const url = `http://localhost:5157/api/Product/GetProductsBy/${productId}`;
+    return this.http.get<any>(url);
+  }
 
   getFilteredProducts(categoryId: string | null, brand: string | null) {
     let url = `http://localhost:5157/api/Product/Search?page_size=50&page_index=1`;
@@ -55,14 +62,14 @@ export class ProductService {
 
   getProducts(page_size?: number, page_index?: number): Observable<any> {
     let url = this.apiUrl;
-  
+
     if (page_size !== undefined && page_index !== undefined) {
       url += `?page_size=${page_size}&page_index=${page_index}`;
     }
-  
-    return this.http.get<any>(url).pipe(
-      rxjsTap((response) => console.log('API Response:', response)) 
-    );
+
+    return this.http
+      .get<any>(url)
+      .pipe(rxjsTap((response) => console.log('API Response:', response)));
   }
   addToCart(productId: number): Observable<any> {
     return this.http.post(`${this.cartApiUrl}/add`, { productId });
@@ -85,7 +92,8 @@ export class ProductService {
   }
 }
 
-function tap<T>(callback: (response: T) => void): import("rxjs").OperatorFunction<T, T> {
+function tap<T>(
+  callback: (response: T) => void
+): import('rxjs').OperatorFunction<T, T> {
   return rxjsTap(callback);
 }
-

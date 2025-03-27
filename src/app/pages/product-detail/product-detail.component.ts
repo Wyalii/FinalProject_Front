@@ -1,9 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
-
 import { CommonModule, DecimalPipe } from '@angular/common';
-
 import { ProductService } from '../../services/product.service';
 import { CartService } from '../../services/cart.service';
 import { Price, Product } from '../../models/product.model';
@@ -70,7 +68,7 @@ export class ProductDetailComponent implements OnInit {
       stock: 0,
     };
 
-    this.cartService.addToCart(fullProduct);
+    // this.cartService.addToCart(fullProduct);
   }
 
   selectedImage: string = '';
@@ -86,7 +84,7 @@ export class ProductDetailComponent implements OnInit {
       next: (response: any) => {
         console.log('Checkout successful:', response);
         alert(response.message || 'Checkout successful!');
-        this.cartService.clearCart();
+        // this.cartService.clearCart();
       },
       error: (error) => {
         console.error('Checkout error:', error);

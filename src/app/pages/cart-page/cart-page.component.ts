@@ -3,6 +3,7 @@ import { ProductService } from '../../services/product.service';
 import { Product } from '../../models/product.model';
 import { CartService } from '../../services/cart.service';
 import { CommonModule } from '@angular/common';
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-cart-page',
@@ -12,58 +13,51 @@ import { CommonModule } from '@angular/common';
 })
 export class CartPageComponent implements OnInit {
   title = 'Cart';
-  products: Product[] = [];
-  cart: Product[] = [];
-
+  UserProductsIds: any = [];
+  UserCart: any = [];
+  UserProducts: any = [];
+  totalPrice: string = '';
+  beforeDiscountPrice: string = '';
   constructor(
     private productService: ProductService,
-    private cartService: CartService
+    public cartService: CartService
   ) {}
 
   ngOnInit(): void {
-    this.loadCart();
-    this.loadProducts(32, 1);
-   
-    this.cartService.cart$.subscribe((cart) => {
-      this.cart = cart; 
+    this.getCartFunc(
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2N2RkMGE4OTNmMjg4YTJiMGU0OTc4ODYiLCJmaXJzdE5hbWUiOiJHaW9yZ2kiLCJsYXN0TmFtZSI6IkdpZ2F1cmkiLCJhZ2UiOjE5LCJlbWFpbCI6Imxhd3hnMTIzQGdtYWlsLmNvbSIsImFkZHJlc3MiOiJMb3MgQW5nZWxlcyIsInJvbGUiOiJkZWZhdWx0IiwiemlwY29kZSI6IjAxNDQiLCJhdmF0YXIiOiJodHRwczovL2Nkbi5wcm9kLndlYnNpdGUtZmlsZXMuY29tLzYyZDg0ZTQ0N2I0ZjllNzI2M2QzMWU5NC82Mzk5YTRkMjc3MTFhNWFkMmM5YmY1Y2RfYmVuLXN3ZWV0LTJMb3d2aVZIWi1FLXVuc3BsYXNoLTEuanBlZyIsImdlbmRlciI6Ik1BTEUiLCJwaG9uZSI6Iis5OTU1OTkxMjM0NTYiLCJ2ZXJpZmllZCI6dHJ1ZSwiaWF0IjoxNzQzMDY1NjcyLCJleHAiOjE3NDMwNjkyNzJ9.p2fN113nqZkeme2KcrWCJmp4sGcCeoGw2lWBdhMKm4E'
+    );
+  }
+
+  getCartFunc(token: string) {
+    this.cartService.getCart(token).subscribe((data) => {
+      this.totalPrice = data.total.price.current;
+      this.beforeDiscountPrice = data.total.price.beforeDiscount;
+
+      this.UserCart = data.products.map((product: any) => ({
+        productId: product.productId,
+        quantity: product.quantity,
+      }));
+
+      console.log('User Cart: ' + JSON.stringify(this.UserCart));
+      this.UserProductsIds = this.UserCart.map(
+        (product: any) => product.productId
+      );
+      console.log('User Products Ids: ' + this.UserProductsIds);
+      this.getProductsDetails();
     });
   }
 
-  loadProducts(page_size: number, page_index: number): void {
-    this.productService.getProducts(page_size, page_index).subscribe({
-      next: (response) => {
-        console.log('Products loaded:', response);
-        this.products = response.products;
-      },
-      error: (error) => {
-        console.error('Error loading products:', error);
-      },
-    });
-  }
+  getProductsDetails() {
+    if (this.UserProductsIds.length === 0) return;
 
-  loadCart(): Product[] {
-    if (typeof localStorage === 'undefined') {
-      console.warn('localStorage is not available.');
-      return [];
-    }
-  
-    const cart = localStorage.getItem('cart');
-    return cart ? JSON.parse(cart) : [];
-  }
+    const productRequests = this.UserProductsIds.map((id: string) =>
+      this.productService.getProductById(id)
+    );
 
-  // removeFromCart(id: string): void {
-  //   this.cartService.removeFromCart(id); 
-  // }
-
-  checkout(): void {
-    this.productService.checkout(this  .cart).subscribe({
-      next: (response) => {
-        alert('Checkout successful!');
-        this.cartService.clearCart(); 
-      },
-      error: (error) => {
-        console.error('Checkout error:', error);
-      },
+    forkJoin<Product[]>(productRequests).subscribe((products) => {
+      this.UserProducts = [...products];
+      console.log('Fetched User Products:', this.UserProducts);
     });
   }
 }
