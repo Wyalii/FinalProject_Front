@@ -4,54 +4,60 @@ import { HttpClient } from '@angular/common/http';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ReactiveFormsModule } from '@angular/forms';
+import { ToastrService } from 'ngx-toastr';
+import { TokenService } from '../../services/token.service';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, FormsModule],
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.css'],
 })
 export class RegisterComponent {
-  registerForm: FormGroup;
   errorMessage: string | null = null;
-
+  firstName: string = '';
+  lastName: string = '';
+  age: number = 0;
+  email: string = '';
+  password: string = '';
+  address: string = '';
+  phone: string = '';
+  zipcode: string = '';
+  avatar: string = '';
+  gender: string = '';
   constructor(
     private fb: FormBuilder,
     private http: HttpClient,
-    private router: Router
-  ) {
-    this.registerForm = this.fb.group({
-      firstName: ['', Validators.required],
-      lastName: ['', Validators.required],
-      age: ['', [Validators.required, Validators.min(1)]],
-      email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(6)]],
-      address: ['', Validators.required],
-      phone: ['', Validators.required],
-      zipcode: ['', Validators.required],
-      avatar: ['', Validators.required],
-      gender: ['', Validators.required],
-    });
-  }
+    private router: Router,
+    private toastr: ToastrService,
+    private tokenService: TokenService
+  ) {}
 
-  onSubmit(): void {
-    if (this.registerForm.valid) {
-      const formData = this.registerForm.value;
-
-      this.http.post('http://localhost:5157/sign-up', formData).subscribe({
+  onSubmit() {
+    if (this.tokenService.getToken()) {
+      const body: any = {
+        firstName: this.firstName,
+        lastName: this.lastName,
+        age: this.age,
+        email: this.email,
+        password: this.password,
+        adress: this.address,
+        phone: this.phone,
+        zipcode: this.zipcode,
+        avatar: this.avatar,
+        gender: this.gender,
+      };
+      this.http.post('http://localhost:5157/sign-up', body).subscribe({
         next: (response) => {
           console.log('Registration successful:', response);
+          this.toastr.success('User SignUp Success!', 'Success');
           this.router.navigate(['/sign-in']);
         },
         error: (error) => {
           console.error('Registration failed:', error);
-          if (error.error && error.error.message) {
-            this.errorMessage = error.error.message;
-          } else {
-            this.errorMessage =
-              'An unexpected error occurred. Please try again.';
-          }
+          this.toastr.error('User SignUp Failed!', 'Error');
         },
       });
     } else {

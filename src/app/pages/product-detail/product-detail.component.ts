@@ -5,6 +5,8 @@ import { CommonModule, DecimalPipe } from '@angular/common';
 import { ProductService } from '../../services/product.service';
 import { CartService } from '../../services/cart.service';
 import { Price, Product } from '../../models/product.model';
+import { ToastrService } from 'ngx-toastr';
+import { TokenService } from '../../services/token.service';
 
 @Component({
   selector: 'app-product-detail',
@@ -23,7 +25,8 @@ export class ProductDetailComponent implements OnInit {
     private route: ActivatedRoute,
     private http: HttpClient,
     private productService: ProductService,
-    private cartService: CartService
+    private toastr: ToastrService,
+    private tokenService: TokenService
   ) {}
 
   ngOnInit(): void {
@@ -49,15 +52,21 @@ export class ProductDetailComponent implements OnInit {
   }
 
   addToCartFunc(productId: string, quantity: number): void {
-    this.productService.addToCart(productId, quantity).subscribe(
-      (data) => {
-        console.log(data);
-        return data;
-      },
-      (error) => {
-        console.log(error);
-      }
-    );
+    if (this.tokenService.getToken()) {
+      this.productService.addToCart(productId, quantity).subscribe(
+        (data) => {
+          this.toastr.success('Added Item To a Cart!', 'Success');
+          console.log(data);
+          return data;
+        },
+        (error) => {
+          this.toastr.error('add Item To a Cart Failed!', 'Error');
+          console.log(error);
+        }
+      );
+    } else {
+      this.toastr.error('User is Not Singed In!', 'Error');
+    }
   }
 
   selectedImage: string = '';

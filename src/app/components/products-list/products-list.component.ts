@@ -3,7 +3,8 @@ import { Router } from '@angular/router';
 import { ProductService } from '../../services/product.service';
 import { Product } from '../../models/product.model';
 import { CommonModule } from '@angular/common';
-import { error } from 'node:console';
+import { ToastrService } from 'ngx-toastr';
+import { TokenService } from '../../services/token.service';
 
 @Component({
   selector: 'app-products-list',
@@ -16,7 +17,12 @@ export class ProductsListComponent {
   cart: Product[] = [];
   loading: boolean = true;
 
-  constructor(public productService: ProductService, private router: Router) {}
+  constructor(
+    public productService: ProductService,
+    private router: Router,
+    private toastr: ToastrService,
+    private tokenService: TokenService
+  ) {}
 
   ngOnInit(): void {
     this.loadProducts(50, 1);
@@ -40,15 +46,21 @@ export class ProductsListComponent {
   }
 
   addToCartFunc(productId: string, quantity: number): void {
-    this.productService.addToCart(productId, quantity).subscribe(
-      (data) => {
-        console.log(data);
-        return data;
-      },
-      (error) => {
-        console.log(error);
-      }
-    );
+    if (this.tokenService.getToken()) {
+      this.productService.addToCart(productId, quantity).subscribe(
+        (data) => {
+          console.log(data);
+          this.toastr.success('Added Item To a Cart!', 'Success');
+          return data;
+        },
+        (error) => {
+          this.toastr.error('add Item To a Cart Failed!', 'Error');
+          console.log(error);
+        }
+      );
+    } else {
+      this.toastr.error('User is Not Singed In!', 'Error');
+    }
   }
 
   removeFromCart(productId: number): void {
