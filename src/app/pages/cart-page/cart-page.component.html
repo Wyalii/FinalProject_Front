@@ -7,13 +7,21 @@
 
       <div class="cart-details">
         <h3 class="cart-item-title">{{ item.title }}</h3>
-        <p class="cart-item-price">💲{{ item.price.current }} {{ item.price.currency }}</p>
+        <p class="cart-item-price">{{ item.price.current }} {{ item.price.currency }}</p>
+
+        <div class="quantity-control">
+          <button (click)="decreaseQuantity(item)" class="quantity-arrow"><img src="\Vector(1).png" alt=""></button>
+          <span class="quantity">{{ getQuantity(item) }}</span>
+          <button (click)="increaseQuantity(item)" class="quantity-arrow"><img src="\Vector(2).png" alt=""></button>
+        </div>
       </div>
 
       <button class="remove-btn" (click)="removeFromCartFunc(item._id,token)">❌ Remove</button>
     </div>
 
     <div class="cart-footer">
+      <p><strong>Total: {{ totalPrice.toFixed(2) }} {{ currency }}</strong></p>
+
       <button class="checkout-btn" (click)="checkout()" style="margin-bottom: 20px;">🛍 Checkout</button>
       <button class="clear-cart-btn" (click)="clearCart()">🗑 Clear Cart</button>
     </div>
@@ -22,5 +30,4 @@
   <ng-template #emptyCart>
     <p class="empty-message">😢 Your cart is empty. Start shopping now!</p>
   </ng-template>
-  
 </div>

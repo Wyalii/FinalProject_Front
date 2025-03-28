@@ -1,12 +1,12 @@
 .filters-container {
-  width: 100%;
+  width: 20%;
   max-width: 1200px;
   margin: auto;
   padding: 1rem;
   box-sizing: border-box;
 }
 
-/* Filters Buttons */
+
 .filter-btn-container {
   display: flex;
   justify-content: space-between;
@@ -41,7 +41,7 @@
   height: 16px;
 }
 
-/* Menus */
+
 .category-menu, .brand-menu {
   margin-top: 1rem;
   display: grid;
@@ -73,9 +73,7 @@
   margin-top: 0.5rem;
 }
 
-/* ----------- Responsive ----------- */
 
-/* Tablet */
 @media (max-width: 992px) {
   .filter-btn-container {
       flex-direction: column;
@@ -83,14 +81,14 @@
   }
 }
 
-/* Small tablet & phone */
+
 @media (max-width: 768px) {
   .category-menu, .brand-menu {
       grid-template-columns: repeat(2, 1fr);
   }
 }
 
-/* Small phones */
+
 @media (max-width: 480px) {
   .category-menu, .brand-menu {
       grid-template-columns: 1fr;

@@ -1,4 +1,4 @@
-<div *ngIf="this.productService.products; ">
+<div *ngIf="this.productService.products">
   <div class="product-list">
     <div *ngFor="let product of this.productService.products; let i = index" 
          class="product-card" (click)="viewProduct(product._id)">
@@ -11,9 +11,11 @@
       <p class="rating">⭐ Rating: {{ product.rating }}</p>
 
       <button class="add-to-cart-btn" (click)="addToCartFunc(product._id,1)">
-        <span class="cart-icon">🛒</span> Add to Cart
+        <img src="\Vector.png" alt="🛒" class="cart-icon" style="color: white; width: 26px;
+  padding-right: 16px;"> Add to Cart
       </button>
     </div>
+    
   </div>
   
 

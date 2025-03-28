@@ -31,7 +31,7 @@ export class CartPageComponent implements OnInit {
   UserProductsIds: any = [];
   UserCart: any = [];
   UserProducts: any = [];
-  totalPrice: string = '';
+  totalPrice: number = 0;
   beforeDiscountPrice: string = '';
 
   ngOnInit(): void {
@@ -39,27 +39,29 @@ export class CartPageComponent implements OnInit {
     this.token = token;
     this.getCartFunc(token);
   }
-
   getCartFunc(token: string | null) {
     if (!token) {
       console.error('No token provided');
       return;
     }
+  
     this.cartService.getCart(token).subscribe(
       (data) => {
         this.totalPrice = data.total.price.current;
         this.beforeDiscountPrice = data.total.price.beforeDiscount;
-
+  
         this.UserCart = data.products.map((product: any) => ({
           productId: product.productId,
           quantity: product.quantity,
         }));
+  
+     
+        console.log('User Cart:', JSON.stringify(this.UserCart));
+  
 
-        console.log('User Cart: ' + JSON.stringify(this.UserCart));
-        this.UserProductsIds = this.UserCart.map(
-          (product: any) => product.productId
-        );
-        console.log('User Products Ids: ' + this.UserProductsIds);
+        this.UserProductsIds = this.UserCart.map((product: any) => product.productId);
+        console.log('User Products Ids:', this.UserProductsIds);
+ 
         this.getProductsDetails();
       },
       (error) => {
@@ -68,19 +70,93 @@ export class CartPageComponent implements OnInit {
       }
     );
   }
-
+currency: string = 'GEL';
   getProductsDetails() {
     if (this.UserProductsIds.length === 0) return;
+  
 
     const productRequests = this.UserProductsIds.map((id: string) =>
       this.productService.getProductById(id)
     );
-
+  
     forkJoin<Product[]>(productRequests).subscribe((products) => {
-      this.UserProducts = [...products];
+
+      this.UserProducts = products;
       console.log('Fetched User Products:', this.UserProducts);
+  
+   
+      this.calculateTotalSum();
     });
   }
+  calculateTotalSum() {
+    
+    let totalSum = 0;
+  
+    this.UserCart.forEach((cartItem: any) => {
+      const product = this.UserProducts.find((p: Product) => p._id === cartItem.productId);
+  
+    
+      if (product) {
+        totalSum += product.price.current * cartItem.quantity;
+      }
+    });
+  
+
+    this.totalPrice = totalSum;
+  
+    console.log('Total Price:', this.totalPrice);
+  }
+    
+increaseQuantity(item: any) {
+  const cartItem = this.UserCart.find((product: any) => product.productId === item._id);
+  if (cartItem) {
+    cartItem.quantity++;
+    this.updateCartQuantity(cartItem.productId, cartItem.quantity);
+    this.updateTotalPrice();
+  }
+}
+
+decreaseQuantity(item: any) {
+  const cartItem = this.UserCart.find((product: any) => product.productId === item._id);
+  if (cartItem && cartItem.quantity > 1) {
+    cartItem.quantity--;
+    this.updateCartQuantity(cartItem.productId, cartItem.quantity);
+    this.updateTotalPrice();
+  }
+}
+
+updateCartQuantity(productId: string, quantity: number) {
+  const token = this.tokenService.getToken(); 
+  this.cartService.updateCart(token, productId, quantity).subscribe(
+    (response) => {
+      console.log('Cart updated:', response);
+    },
+    (error) => {
+      console.error('Error updating cart:', error);
+    }
+  );
+}
+
+updateTotalPrice() {
+  this.totalPrice = 0; 
+  this.UserCart.forEach((cartItem: any) => {
+    const product = this.UserProducts.find((p: Product) => p._id === cartItem.productId);
+    if (product) {
+      const price = parseFloat(product.price.current); 
+      this.totalPrice += price * cartItem.quantity;
+    }
+  });
+
+  console.log('Updated total price:', this.totalPrice);
+}
+
+
+
+getQuantity(item: any) {
+  const cartItem = this.UserCart.find((product: any) => product.productId === item._id);
+  return cartItem ? cartItem.quantity : 0;
+}
+
 
   checkout(): void {
     this.cartService.checkout().subscribe(
@@ -109,7 +185,7 @@ export class CartPageComponent implements OnInit {
         this.toastr.success('Cart cleared successfully!', 'Success');
         this.UserCart = [];
         this.UserProducts = [];
-        this.totalPrice = '0';
+        this.totalPrice = 0;
         this.beforeDiscountPrice = '0';
       },
       (error) => {
