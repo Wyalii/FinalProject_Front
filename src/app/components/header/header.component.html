@@ -1,31 +1,41 @@
-<header class="header"  *ngIf="!loading">
-    <section class="sec1">
-      <img src="/logo.svg" class="logo" (click)="navigateTo('')">
-      <input type="search" placeholder="search..." class="search" [(ngModel)]="keywords" (keydown.enter)="searchFunc(keywords)">
-      <img src="/search.png" class="search-logo" (click)="searchFunc(keywords)">
-    </section>
-  
-    <img src="/burger-menu.svg" class="hamburger-menu-logo">
-  
-    <section class="sec2">
-      <button *ngIf="!token" class="btn" (click)="navigateTo('SignIn')">
-        <p>Sign In</p>
-        <img src="/signIn.png" class="signIn">
-      </button>
-      <button *ngIf="!token" class="btn" (click)="navigateTo('Register')">
-        <p>Register</p>
-        <img src="guest.svg" class="guest">
-      </button>
-      <button *ngIf="token" (click)="navigateTo('/CartPage')" class="cart-btn">
-        <img src="CartImg.svg" class="cart-img">
-        <p>View Cart</p>
-      </button>
-      <button *ngIf="token" (click)="navigateTo('/UserPfp')" class="cart-btn">
-       
-        <p>{{user?.firstname}}</p>
-      </button>
-      
-    </section>
-  </header>
-  
+<header class="header" *ngIf="!loading">
+  <section class="sec1">
+      <img src="/logo.svg" class="logo" alt="Logo" (click)="navigateTo('')">
 
+      <div class="search-bar">
+          <input type="search" placeholder="Search products..." [(ngModel)]="keywords" (keydown.enter)="searchFunc(keywords)">
+          <button (click)="searchFunc(keywords)">
+              <img src="/search.png" alt="Search">
+          </button>
+      </div>
+  </section>
+
+  <img src="/burger-menu.svg" class="hamburger-menu-logo" alt="Menu" (click)="toggleMenu()">
+
+  <section class="sec2" [class.show]="isMenuOpen">
+      <ng-container *ngIf="!token">
+          <button class="btn" (click)="navigateTo('SignIn')">
+              <img src="/signIn.png" alt="Sign In">
+              <span>Sign In</span>
+          </button>
+          <button class="btn" (click)="navigateTo('Register')">
+              <img src="guest.svg" alt="Register">
+              <span>Register</span>
+          </button>
+      </ng-container>
+      <button class="cart-btn" (click)="navigateTo('/verify-email')">
+        <img  alt="✅">
+        <span>Verify Email</span>
+    </button>
+   
+      <ng-container *ngIf="token">
+          <button class="cart-btn" (click)="navigateTo('/CartPage')">
+              <img src="CartImg.svg" alt="Cart">
+              <span>Cart</span>
+          </button>
+       
+       
+      </ng-container>
+      
+  </section>
+</header>

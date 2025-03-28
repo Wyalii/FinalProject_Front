@@ -35,6 +35,12 @@ export class HeaderComponent implements OnInit {
     this.navigateTo('');
     this.searchService.searchProducts(keywords);
   }
+  isMenuOpen: boolean = false;
+
+toggleMenu() {
+    this.isMenuOpen = !this.isMenuOpen;
+}
+
   navigateTo(path: string): void {
     this.router.navigate([path]);
   }

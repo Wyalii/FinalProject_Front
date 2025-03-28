@@ -84,7 +84,11 @@ export class ProductsListComponent {
       }
     }
   }
+  menuOpen: boolean = false;
 
+  toggleMenu(): void {
+    this.menuOpen = !this.menuOpen;
+  }
   removeFromCart(productId: number): void {
     this.cart = this.cart.filter((item) => item._id !== productId.toString());
   }

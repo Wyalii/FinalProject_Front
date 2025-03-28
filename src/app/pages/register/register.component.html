@@ -1,15 +1,24 @@
 <div class="register-container">
-    <h2>Register</h2>
-    <input type="text"  placeholder="First Name" [(ngModel)]="firstName">
-      <input type="text"  placeholder="Last Name" [(ngModel)]="lastName">
-      <input type="number" placeholder="Age" [(ngModel)]="age">
-      <input type="email"  placeholder="Email" [(ngModel)]="email">
-      <input type="password"  placeholder="Password" [(ngModel)]="password">
-      <input type="text"  placeholder="Address" [(ngModel)]="address">
-      <input type="text"  placeholder="Phone" [(ngModel)]="phone">
-      <input type="text"  placeholder="Zip Code" [(ngModel)]="zipcode">
-      <input type="text"  placeholder="Avatar URL" [(ngModel)]="avatar">
-      <input type="text"  placeholder="Gender" [(ngModel)]="gender">
-      <button (click)="registerFunc()">Submit</button>
+  <h2>Register</h2>
+  <input type="text" placeholder="First Name" [(ngModel)]="firstName">
+  <input type="text" placeholder="Last Name" [(ngModel)]="lastName">
+  <input type="number" placeholder="Age" [(ngModel)]="age">
+  <input type="email" placeholder="Email" [(ngModel)]="email">
+  <input type="password" placeholder="Password" [(ngModel)]="password">
+  <input type="text" placeholder="Address" [(ngModel)]="address">
+  <input type="text" placeholder="Phone" [(ngModel)]="phone">
+  <input type="text" placeholder="Zip Code" [(ngModel)]="zipcode">
+  <input type="text" placeholder="Avatar URL" [(ngModel)]="avatar">
+  <input type="text" placeholder="Gender" [(ngModel)]="gender">
+  <button (click)="registerFunc()">Submit</button>
+</div>
+<footer class="product-footer">
+  <div class="footer-content">
+    <p>&copy; 2025 Your Company. All Rights Reserved.</p>
+    <div class="footer-links">
+      <a href="/about-us">About Us</a>
+      <a href="/contact">Contact</a>
+      <a href="/terms">Terms of Service</a>
+    </div>
   </div>
-  
+</footer>

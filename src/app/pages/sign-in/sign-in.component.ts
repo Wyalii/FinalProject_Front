@@ -7,6 +7,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { FormsModule } from '@angular/forms';
 import { TokenService } from '../../services/token.service';
 import { ToastrService } from 'ngx-toastr';
+
 @Component({
   selector: 'app-sign-in',
   imports: [CommonModule, ReactiveFormsModule, FormsModule],
@@ -24,7 +25,9 @@ export class SignInComponent {
     private tokenService: TokenService,
     private toastr: ToastrService
   ) {}
-
+  navigateToVerifyEmail() {
+    this.router.navigate(['/verify-email']);
+  }
   onSubmit(): void {
     const url = `http://localhost:5157/sign-in?Email=${encodeURIComponent(
       this.email
@@ -50,4 +53,5 @@ export class SignInComponent {
         },
       });
   }
+  
 }

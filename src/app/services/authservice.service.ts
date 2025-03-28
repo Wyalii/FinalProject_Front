@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
+import { Observable } from 'rxjs';
 @Injectable({
   providedIn: 'root',
 })
@@ -11,8 +12,17 @@ export class AuthService {
   constructor(
     private http: HttpClient,
     private toastr: ToastrService,
-    private router: Router
+    private router: Router,
   ) {}
+
+  verifyEmail(email: string): Observable<any> {
+    const headers = { 'Content-Type': 'application/json' };
+    return this.http.post<any>(
+      'http://localhost:5157/verify-email',
+      { email },
+      { headers }
+    );
+  }
 
   register(
     firstName: string,
@@ -31,28 +41,38 @@ export class AuthService {
       return;
     }
 
-    const body = {
-      firstName,
-      lastName,
-      age,
-      email,
-      password,
-      address,
-      phone,
-      zipcode,
-      avatar,
-      gender,
-    };
-
-    return this.http.post('http://localhost:5157/sign-up', body).subscribe(
+    this.verifyEmail(email).subscribe(
       (data) => {
-        console.log('Registration successful:', data);
-        this.toastr.success('User SignUp Success!', 'Success');
-        this.router.navigate(['/sign-in']);
+        console.log('Email verification successful:', data);
+  
+        const body = {
+          firstName,
+          lastName,
+          age,
+          email,
+          password,
+          address,
+          phone,
+          zipcode,
+          avatar,
+          gender,
+        };
+
+        this.http.post('http://localhost:5157/sign-up', body).subscribe(
+          (data) => {
+            console.log('Registration successful:', data);
+            this.toastr.success('User SignUp Success!', 'Success');
+            this.router.navigate(['/sign-in']);
+          },
+          (error) => {
+            console.error('Registration failed:', error);
+            this.toastr.error(`${error.error.error}`, 'Error');
+          }
+        );
       },
       (error) => {
-        console.error('Registration failed:', error);
-        this.toastr.error(`${error.error.error} `, 'Error');
+        console.error('Email verification failed:', error);
+        this.toastr.error('Email verification failed', 'Error');
       }
     );
   }

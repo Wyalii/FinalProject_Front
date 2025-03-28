@@ -1,91 +1,98 @@
 .filters-container {
-    width: 17%;
-    background: #ffffff;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    border-radius: 10px;
-    padding: 10px;
-  }
-  
+  width: 100%;
+  max-width: 1200px;
+  margin: auto;
+  padding: 1rem;
+  box-sizing: border-box;
+}
+
+/* Filters Buttons */
+.filter-btn-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.category-open-btn, .brand-open-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+}
+
+.category-open-btn button, .brand-open-btn button {
+  padding: 0.5rem 1rem;
+  border: none;
+  background-color: #f0f0f0;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.category-open-btn button.active, .brand-open-btn button.active {
+  background-color: #ff8d55;
+  color: white;
+}
+
+.arrow {
+  width: 16px;
+  height: 16px;
+}
+
+/* Menus */
+.category-menu, .brand-menu {
+  margin-top: 1rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 1rem;
+}
+
+.category, .brand {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+}
+
+.category:hover, .brand:hover {
+  background-color: #f9f9f9;
+}
+
+.category img, .brand img {
+  width: 50px;
+  height: 50px;
+  object-fit: contain;
+}
+
+.category p {
+  margin-top: 0.5rem;
+}
+
+/* ----------- Responsive ----------- */
+
+/* Tablet */
+@media (max-width: 992px) {
   .filter-btn-container {
-    display: flex;
-  width: 10%;
-    
-    gap: 10px;
-    padding: 10px;
+      flex-direction: column;
+      align-items: flex-start;
   }
-  
-  .category-open-btn,
-  .brand-open-btn {
-    display: flex;
-    align-items: center;
-    gap: 8px;
+}
+
+/* Small tablet & phone */
+@media (max-width: 768px) {
+  .category-menu, .brand-menu {
+      grid-template-columns: repeat(2, 1fr);
   }
-  
-  button {
-    background: #f4f4f4;
-    border: 2px solid transparent;
-    border-radius: 5px;
-    padding: 10px 16px;
-    font-size: 14px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s ease;
+}
+
+/* Small phones */
+@media (max-width: 480px) {
+  .category-menu, .brand-menu {
+      grid-template-columns: 1fr;
   }
-  
-  button:hover {
-    background: #e0e0e0;
-  }
-  
-  button.active {
-    background: #007bff;
-    color: white;
-    border-color: #007bff;
-  }
-  
-  .arrow {
-    width: 14px;
-    transition: transform 0.3s ease;
-  }
-  
-  .category-menu,
-  .brand-menu {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    padding: 10px;
-  }
-  
-  .category,
-  .brand {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 8px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-  }
-  
-  .category img,
-  .brand-logo {
-    width: 30px;
-    height: 30px;
-  }
-  
-  .category p {
-    font-size: 14px;
-    font-weight: 600;
-    color: #333;
-  }
-  
-  .category:hover,
-  .brand:hover {
-    background: #f4f4f4;
-    border-radius: 5px;
-  }
-  
-  .brand-logo {
-    width: 40px;
-    height: 40px;
-    object-fit: contain;
-  }
-  
+}
